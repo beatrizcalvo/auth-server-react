@@ -4,6 +4,8 @@
   "description": "Auth server for React web page",
   "main": "app.js",
   "repository": "https://github.com/beatrizcalvo/auth-server-react",
+  "license": "MIT",
+  "private": false,
   "scripts": {
     "start": "node app.js"
   },
