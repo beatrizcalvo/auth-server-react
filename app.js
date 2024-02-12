@@ -26,4 +26,9 @@ server.keepAliveTimeout = 120 * 1000;
 server.headersTimeout = 120 * 1000;
 
 // An endpoint to see if there's an existing account for a given email address
-app.get("/check-account", (req, res) => res.send("Auth API.\nPlease use POST /auth & POST /verify for authentication"));
+app.post("/check-account", (req, res) => {
+  const { email } = req.body;
+  console.log(`POST /check-account || Email: ${email}`);
+
+  
+});
