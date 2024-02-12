@@ -27,7 +27,7 @@ server.headersTimeout = 120 * 1000;
 
 // An endpoint to see if there's an existing account for a given email address
 app.post("/check-account", (req, res) => {
-  console.log(`POST /check-account || Body: ${req.body}`);
+  console.log(`POST /check-account || Body: ` + req.body);
   
   const { email } = req.body;
   if (email) {
@@ -36,5 +36,5 @@ app.post("/check-account", (req, res) => {
   
   const user = db.get("users").value().filter(user => email === user.email);
   
-  res.status(200);
+  res.status(200).json();
 });
