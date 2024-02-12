@@ -32,9 +32,7 @@ app.post("/check-account", (req, res) => {
   const { email } = req.body;
   if (email) {
     console.log(`Enviado email en el body`);
-  }
+  }  
   
-  const user = db.get("users").value().filter(user => email === user.email);
-  
-  res.status(200).json();
+  res.status(200);
 });
