@@ -1,7 +1,7 @@
-const express = require("express")
+const express = require("express");
 
 // Initialize Express app
-const app = express()
+const app = express();
 const port = process.env.PORT || 3001;
 
 // Basic home route for the API
