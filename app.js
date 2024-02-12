@@ -15,5 +15,5 @@ const server = app.listen(port, () => console.log(`Auth Server app listening on 
 server.keepAliveTimeout = 120 * 1000;
 server.headersTimeout = 120 * 1000;
 
-// Basic home route for the API
-app.get("/", (req, res) => res.send("Auth API.\nPlease use POST /auth & POST /verify for authentication"));
+// An endpoint to see if there's an existing account for a given email address
+app.get("/check-account", (req, res) => res.send("Auth API.\nPlease use POST /auth & POST /verify for authentication"));
