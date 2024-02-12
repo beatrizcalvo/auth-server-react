@@ -5,6 +5,8 @@ const jwt = require("jsonwebtoken")
 // Initialize DB from file
 var low = require("lowdb");
 var FileSync = require("lowdb/adapters/FileSync");
+var adapter = new FileSync("./database.json");
+var db = low(adapter);
 
 // Initialize Express app
 const app = express()
@@ -23,4 +25,6 @@ app.get("/", (_req, res) => {
 app.post('/check-account', (req, res) => {
     const { email } = req.body
     console.log("POST /check-account || Email: " + req.body)    
+
+    return res.status(401).json({ status: "invalid auth", message: "error" });
 })
