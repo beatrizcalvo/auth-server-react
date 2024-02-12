@@ -27,12 +27,17 @@ server.headersTimeout = 120 * 1000;
 
 // An endpoint to see if there's an existing account for a given email address
 app.post("/check-account", (req, res) => {
+  console.log(`POST /check-account || Request Body: ` + JSON.stringify(req.body));
+  
   const { email } = req.body;
   if (!email) {
     const bodyError = {message: "Invalid mandatory input error", description: "Input body email can not be empty"};
     console.log(`POST /check-account || Response Status: 400 Response Body: ` + JSON.stringify(bodyError));
     return res.status(400).json(bodyError);
   }
-  
-  return res.status(200);
+
+  const user = db.get("users").value().filter(user => email === user.email);
+  const bodyOK = {userExists: user.length === 1};
+  console.log(`POST /check-account || Response Status: 200 Response Body: ` + JSON.stringify(bodyOK)); 
+  return res.status(200).json(bodyOK);
 });
