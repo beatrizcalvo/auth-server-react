@@ -14,6 +14,12 @@ dbConnect();
 const app = express();
 const port = process.env.PORT || 3001;
 
+// Set up CORS and JSON middlewares
+var cors = require("cors");
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 // Server configuration
 const server = app.listen(port, () =>
   console.log(`Auth Server app listening on port ${port}!`),
