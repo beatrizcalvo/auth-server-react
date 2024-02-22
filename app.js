@@ -44,14 +44,20 @@ app.post("/register", (request, response) => {
         .save()
         .then((result) => {
           response.status(201).send({
-            message: "User created successfully",
             id: result._id,
+            email: result.email,
+            createdAt: new Date().toISOString(),
           });
         })
         .catch((error) => {
           response.status(500).send({
             errors: [
-              { message: "Error creating user", description: error.message },
+              {
+                code: "AUTH_API-T-0001",
+                level: "error",
+                message: "Error creating user",
+                description: error.message,
+              },
             ],
           });
         });
