@@ -50,7 +50,9 @@ app.post("/register", (request, response) => {
         })
         .catch((error) => {
           response.status(500).send({
-            errors: [{ message: "Error creating user", description: error }],
+            errors: [
+              { message: "Error creating user", description: error.message },
+            ],
           });
         });
     })
@@ -58,7 +60,12 @@ app.post("/register", (request, response) => {
       // Catch error if the password hash isn't successful
       response.status(500).send({
         errors: [
-          { message: "Error hashing password", description: error.message },
+          {
+            code: "AUTH_API-T-0001",
+            level: "error",
+            message: "Error hashing password",
+            description: error.message,
+          },
         ],
       });
     });
