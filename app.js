@@ -40,12 +40,26 @@ app.post("/register", (request, response) => {
       userController
         .createUser(request.body.email, hashedPassword)
         .then((result) => {
-          console.log("OK - " + result);
-          response.status(200);
+          let responseBody = {
+            id: result._id,
+            email: result.email,
+            createdAt: result.createdAt,
+          };
+          console.log(
+            "POST /register || Response Status: 201 ## Response Body: " +
+              JSON.stringify(responseBody),
+          );
+          response.status(201).send(responseBody);
         })
         .catch((error) => {
-          console.log(error);
-          response.status(500);
+          // Catch error if save user in database fails
+          console.log(
+            'POST /register ## Request Body: {"email": "' +
+              request.body.email +
+              '" ...} || Response Status: 500 ## Response Body: ' +
+              JSON.stringify(errorBody.AUTH_API_T_0002(error.message)),
+          );
+          response.status(500).send(errorBody.AUTH_API_T_0002(error.message));
         });
     })
     .catch((error) => {
