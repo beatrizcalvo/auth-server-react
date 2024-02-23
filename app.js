@@ -38,12 +38,33 @@ app.post("/register", (request, response) => {
     .then((hashedPassword) => {
       // Save the new user
       userController
-        .createUser("test", "test", request.body.email, hashedPassword)
+        .createUser(
+          request.body.firstName,
+          request.body.lastName,
+          request.body.email,
+          hashedPassword,
+        )
         .then((result) => {
-          console.log(JSON.stringify(result));
+          let responseBody = {
+            id: result._id,
+            email: result.email,
+            createdAt: result.createdAt,
+          };
+          console.log(
+            "POST /register || Response Status: 201 ## Response Body: " +
+              JSON.stringify(responseBody),
+          );
+          response.status(201).send(responseBody);
         })
         .catch((error) => {
-          console.log(error);
+          // Catch error if save user in database fails
+          console.log(
+            'POST /register ## Request Body: {"email": "' +
+              request.body.email +
+              '" ...} || Response Status: 500 ## Response Body: ' +
+              JSON.stringify(errorBody.AUTH_API_T_0002(error.message)),
+          );
+          response.status(500).send(errorBody.AUTH_API_T_0002(error.message));
         });
     })
     .catch((error) => {
