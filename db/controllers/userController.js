@@ -6,12 +6,12 @@ const createUser = async function (firstName, lastName, email, password) {
   let session = await mongoose.startSession();
   session.startTransaction();
   try {
+    // Save profile data
     const profile = Profile({ firstName: firstName, lastName: lastName });
-    const user = User({ email: email, password: password });
-
-    // Save data
     await profile.save({ session });
-    user.profile.push(profile);
+
+    // Save user data
+    const user = User({ email: email, password: password, profile: profile });
     const result = await user.save({ session });
 
     // Commit the changes
