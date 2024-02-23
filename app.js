@@ -52,7 +52,9 @@ app.post("/register", (request, response) => {
             createdAt: result.createdAt,
           };
           console.log(
-            "POST /register || Response Status: 201 ## Response Body: " +
+            'POST /register ## Request Body: {"email": "' +
+              request.body.email +
+              '" ...} || Response Status: 201 ## Response Body: ' +
               JSON.stringify(responseBody),
           );
           response.status(201).send(responseBody);
@@ -88,7 +90,36 @@ app.post("/login", (request, response) => {
       // Compare the password entered and the hashed password found
       bcrypt
         .compare(request.body.password, user.password)
-        .then(() => {})
+        .then((passwordCheck) => {
+          // Check if password matches
+          if (!passwordCheck) {
+            let errorMessage = "Passwords does not match";
+            console.log(
+              'POST /login ## Request Body: {"email": "' +
+                request.body.email +
+                '" ...} || Response Status: 404 ## Response Body: ' +
+                JSON.stringify(errorBody.AUTH_API_F_0001(errorMessage)),
+            );
+            response.status(404).send(errorBody.AUTH_API_F_0001(errorMessage));
+          }
+
+          // Create JWT token
+          const token = jwt.sign(
+            {
+              userId: user._id
+            }
+          );
+
+          // Return success response
+          let responseBody = {};
+          console.log(
+            'POST /login ## Request Body: {"email": "' +
+              request.body.email +
+              '" ...} || Response Status: 200 ## Response Body: ' +
+              JSON.stringify(responseBody)
+          );
+          response.status(200).send(responseBody);
+        })
         .catch(() => {
           // Catch error if password do not match
           let errorMessage = "Passwords does not match";
