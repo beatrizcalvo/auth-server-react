@@ -32,33 +32,10 @@ app.post("/register", (request, response) => {
   // Hash the password
   bcrypt
     .hash(request.body.password, 10)
-    .then((hashedPassword) => {
-      // Save the new user
-      userController
-        .createUser(email, hashedPassword)
-        .then((result) => {
-          response.status(201).send({
-            id: result._id,
-            email: result.email,
-            createdAt: result.createdAt,
-          });
-        })
-        .catch((error) => {
-          response.status(500).send({
-            errors: [
-              {
-                code: "AUTH_API-T-0002",
-                level: "error",
-                message: "Error creating user",
-                description: error.message,
-              },
-            ],
-          });
-        });
-    })
+    .then((hashedPassword) => {})
     .catch((error) => {
       // Catch error if the password hash isn't successful
-      response.status(500).send({
+      let errorBody = {
         errors: [
           {
             code: "AUTH_API-T-0001",
@@ -67,7 +44,16 @@ app.post("/register", (request, response) => {
             description: error.message,
           },
         ],
-      });
+      };
+      console.log(
+        'POST /register ## Request Body: {"email": "' +
+          request.body.email +
+          '" ...} || Response Status: 500 ## Response Body: ' +
+          JSON.stringify(errorBody) +
+          "|| Error Description: " +
+          error,
+      );
+      response.status(500).send(errorBody);
     });
 });
 
