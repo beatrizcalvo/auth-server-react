@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 
 // Require database connection
 const dbConnect = require("./db/dbConnect");
-const User = require("./db/userModel");
+const userController = require("./db/controllers/userController");
 
 // Execute database connection
 dbConnect();
@@ -33,27 +33,21 @@ app.post("/register", (request, response) => {
   bcrypt
     .hash(request.body.password, 10)
     .then((hashedPassword) => {
-      // reate a new user instance and collect the data
-      const user = new User({
-        email: request.body.email,
-        password: hashedPassword,
-      });
-
       // Save the new user
-      user
-        .save()
+      userController
+        .createUser(email, hashedPassword)
         .then((result) => {
           response.status(201).send({
             id: result._id,
             email: result.email,
-            createdAt: new Date().toISOString(),
+            createdAt: result.createdAt,
           });
         })
         .catch((error) => {
           response.status(500).send({
             errors: [
               {
-                code: "AUTH_API-T-0001",
+                code: "AUTH_API-T-0002",
                 level: "error",
                 message: "Error creating user",
                 description: error.message,
