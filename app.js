@@ -8,6 +8,7 @@ const errorBody = require("./constants/errorConstants");
 
 // Require database connection
 const dbConnect = require("./db/dbConnect");
+const userController = require("./db/controllers/userController");
 
 // Execute database connection
 dbConnect();
@@ -35,8 +36,17 @@ app.post("/register", (request, response) => {
   bcrypt
     .hash(request.body.password, 10)
     .then((hashedPassword) => {
-      console.log("OK");
-      response.status(200);
+      // Save the new user
+      userController
+        .createUser(request.body.email, hashedPassword)
+        .then((result) => {
+          console.log("OK - " + result);
+          response.status(200);
+        })
+        .catch((error) => {
+          console.log(error);
+          response.status(500);
+        });
     })
     .catch((error) => {
       // Catch error if the password hash isn't successful
@@ -44,7 +54,7 @@ app.post("/register", (request, response) => {
         'POST /register ## Request Body: {"email": "' +
           request.body.email +
           '" ...} || Response Status: 500 ## Response Body: ' +
-          JSON.stringify(errorBody.AUTH_API_T_0001(error)),
+          JSON.stringify(errorBody.AUTH_API_T_0001(error.message)),
       );
       response.status(500).send(errorBody.AUTH_API_T_0001(error.message));
     });
