@@ -38,7 +38,7 @@ app.post("/register", (request, response) => {
     .then((hashedPassword) => {
       // Save the new user
       userController
-        .createUser(email, hashedPassword)
+        .createUser(request.body.email, hashedPassword)
         .then((result) => {
           console.log(JSON.stringify(result));
         })
