@@ -11,10 +11,12 @@ const createUser = async function (firstName, lastName, email, password) {
 
     // Save data
     await profile.save({ session });
-    await user.save({ session });
+    user.profile.push(profile);
+    const result = await user.save({ session });
 
     // Commit the changes
     await session.commitTransaction();
+    return result;
   } catch (error) {
     // Rollback any changes made in the database
     await session.abortTransaction();
