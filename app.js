@@ -3,9 +3,11 @@ require("dotenv").config();
 const express = require("express");
 const bcrypt = require("bcrypt");
 
+// Require constants declaration
+const errorBody = require("./constants/errorConstants");
+
 // Require database connection
 const dbConnect = require("./db/dbConnect");
-const userController = require("./db/controllers/userController");
 
 // Execute database connection
 dbConnect();
@@ -32,28 +34,19 @@ app.post("/register", (request, response) => {
   // Hash the password
   bcrypt
     .hash(request.body.password, 10)
-    .then((hashedPassword) => {})
+    .then((hashedPassword) => {
+      console.log("OK");
+      response.status(200);
+    })
     .catch((error) => {
       // Catch error if the password hash isn't successful
-      let errorBody = {
-        errors: [
-          {
-            code: "AUTH_API-T-0001",
-            level: "error",
-            message: "Error hashing password",
-            description: error.message,
-          },
-        ],
-      };
       console.log(
         'POST /register ## Request Body: {"email": "' +
           request.body.email +
           '" ...} || Response Status: 500 ## Response Body: ' +
-          JSON.stringify(errorBody) +
-          "|| Error Description: " +
-          error,
+          JSON.stringify(errorBody.AUTH_API_T_0001(error)),
       );
-      response.status(500).send(errorBody);
+      response.status(500).send(errorBody.AUTH_API_T_0001(error.message));
     });
 });
 
