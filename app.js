@@ -93,14 +93,13 @@ app.post("/login", (request, response) => {
         .then((passwordCheck) => {
           // Check if password matches
           if (!passwordCheck) {
-            let errorMessage = "Passwords does not match";
             console.log(
               'POST /login ## Request Body: {"email": "' +
                 request.body.email +
                 '" ...} || Response Status: 404 ## Response Body: ' +
-                JSON.stringify(errorBody.AUTH_API_F_0001(errorMessage)),
+                JSON.stringify(errorBody.AUTH_API_F_0002()),
             );
-            response.status(404).send(errorBody.AUTH_API_F_0001(errorMessage));
+            response.status(500).send(errorBody.AUTH_API_F_0002());
           }
 
           // Create JWT token
@@ -130,26 +129,24 @@ app.post("/login", (request, response) => {
         })
         .catch(() => {
           // Catch error if password do not match
-          let errorMessage = "Passwords does not match";
           console.log(
             'POST /login ## Request Body: {"email": "' +
               request.body.email +
               '" ...} || Response Status: 404 ## Response Body: ' +
-              JSON.stringify(errorBody.AUTH_API_F_0001(errorMessage)),
+              JSON.stringify(errorBody.AUTH_API_F_0002()),
           );
-          response.status(404).send(errorBody.AUTH_API_F_0001(errorMessage));
+          response.status(500).send(errorBody.AUTH_API_F_0002());
         });
     })
     .catch(() => {
       // Catch error if email does not exist
-      let errorMessage = "Email not found";
       console.log(
         'POST /login ## Request Body: {"email": "' +
           request.body.email +
           '" ...} || Response Status: 404 ## Response Body: ' +
-          JSON.stringify(errorBody.AUTH_API_F_0001(errorMessage)),
+          JSON.stringify(errorBody.AUTH_API_F_0001()),
       );
-      response.status(404).send(errorBody.AUTH_API_F_0001(errorMessage));
+      response.status(404).send(errorBody.AUTH_API_F_0001());
     });
 });
 
