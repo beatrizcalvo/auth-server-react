@@ -106,8 +106,13 @@ app.post("/login", (request, response) => {
           // Create JWT token
           const token = jwt.sign(
             {
-              userId: user._id
-            }
+              iss: user.email,
+              sub: user._id,
+              iat: Date.now(),
+              exp: Date.now() + 1
+            },
+            process.env.JWT_SECRET_KEY,
+            { expiresIn: '1h' }
           );
 
           // Return success response
