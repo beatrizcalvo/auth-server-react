@@ -116,7 +116,10 @@ app.post("/login", (request, response) => {
           );
 
           // Return success response
-          let responseBody = {};
+          let responseBody = {
+            access_token: token,
+            token_type: "bearer"
+          };
           console.log(
             'POST /login ## Request Body: {"email": "' +
               request.body.email +
