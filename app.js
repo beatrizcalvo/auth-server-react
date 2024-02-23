@@ -2,6 +2,7 @@
 require("dotenv").config();
 const express = require("express");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 // Require constants declaration
 const errorBody = require("./constants/errorConstants");
@@ -76,6 +77,40 @@ app.post("/register", (request, response) => {
           JSON.stringify(errorBody.AUTH_API_T_0001(error.message)),
       );
       response.status(500).send(errorBody.AUTH_API_T_0001(error.message));
+    });
+});
+
+// Login an existing user
+app.post("/login", (request, response) => {
+  // Check if email exists
+  User.findOne({ email: request.body.email })
+    .then((user) => {
+      // Compare the password entered and the hashed password found
+      bcrypt
+        .compare(request.body.password, user.password)
+        .then(() => {})
+        .catch(() => {
+          // Catch error if password do not match
+          let errorMessage = "Passwords does not match";
+          console.log(
+            'POST /login ## Request Body: {"email": "' +
+              request.body.email +
+              '" ...} || Response Status: 404 ## Response Body: ' +
+              JSON.stringify(errorBody.AUTH_API_F_0001(errorMessage)),
+          );
+          response.status(404).send(errorBody.AUTH_API_F_0001(errorMessage));
+        });
+    })
+    .catch(() => {
+      // Catch error if email does not exist
+      let errorMessage = "Email not found";
+      console.log(
+        'POST /login ## Request Body: {"email": "' +
+          request.body.email +
+          '" ...} || Response Status: 404 ## Response Body: ' +
+          JSON.stringify(errorBody.AUTH_API_F_0001(errorMessage)),
+      );
+      response.status(404).send(errorBody.AUTH_API_F_0001(errorMessage));
     });
 });
 
