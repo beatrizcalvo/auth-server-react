@@ -31,4 +31,4 @@ const findByEmail = function (email) {
   return User.findOne({ email: email });
 };
 
-module.exports = { createUser };
+module.exports = { createUser, findByEmail };
