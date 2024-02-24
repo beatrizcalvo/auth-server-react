@@ -85,7 +85,7 @@ app.post("/register", (request, response) => {
 // Login an existing user
 app.post("/login", (request, response) => {
   // Check if email exists
-  User.findOne({ email: request.body.email })
+  userController.findByEmail(request.body.email)
     .then((user) => {
       // Compare the password entered and the hashed password found
       bcrypt
