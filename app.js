@@ -42,7 +42,7 @@ app.post("/register", (request, response) => {
         .createUser(
           request.body.firstName,
           request.body.lastName,
-          request.body.email,
+          request.body.email.toLowerCase(),
           hashedPassword,
         )
         .then((result) => {
@@ -85,7 +85,7 @@ app.post("/register", (request, response) => {
 // Login an existing user
 app.post("/login", (request, response) => {
   // Check if email exists
-  userController.findByEmail(request.body.email)
+  userController.findByEmail(request.body.email.toLowerCase())
     .then((user) => {
       // Compare the password entered and the hashed password found
       bcrypt
