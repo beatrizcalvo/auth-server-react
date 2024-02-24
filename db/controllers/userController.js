@@ -27,4 +27,8 @@ const createUser = async function (firstName, lastName, email, password) {
   }
 };
 
+const findByEmail = function (email) {
+  return User.findOne({ email: email });
+};
+
 module.exports = { createUser };
