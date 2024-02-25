@@ -92,39 +92,40 @@ app.post("/login", (request, response) => {
         .compare(request.body.password, user.password)
         .then((passwordCheck) => {
           // Check if password matches
-          if (!passwordCheck) {
-            console.log(
-              'POST /login ## Request Body: {"email": "' +
-                request.body.email +
-                '" ...} || Response Status: 400 ## Response Body: ' +
-                JSON.stringify(errorBody.AUTH_API_F_0002()),
-            );
-            response.status(400).send(errorBody.AUTH_API_F_0002());
-          }
+          //if (!passwordCheck) {
+            //console.log(
+              //'POST /login ## Request Body: {"email": "' +
+                //request.body.email +
+                //'" ...} || Response Status: 400 ## Response Body: ' +
+                //JSON.stringify(errorBody.AUTH_API_F_0002()),
+            //);
+            //response.status(400).send(errorBody.AUTH_API_F_0002());
+          //}
 
           // Create JWT token
-          const token = jwt.sign(
-            {
-              iss: user.email,
-              sub: user._id,
-              iat: Date.now(),
-              exp: Date.now() + 1
-            },
-            process.env.JWT_SECRET_KEY,
-            { expiresIn: '1h' }
-          );
+          //const token = jwt.sign(
+            //{
+              //iss: user.email,
+              //sub: user._id,
+              //iat: Date.now(),
+              //exp: Date.now() + 1
+            //},
+            //process.env.JWT_SECRET_KEY,
+            //{ expiresIn: '1h' }
+          //);
 
           // Return success response
           let responseBody = {
-            access_token: token,
-            token_type: "bearer"
+            //access_token: token,
+            //token_type: "bearer"
+            passwordCheck: passwordCheck
           };
-          console.log(
-            'POST /login ## Request Body: {"email": "' +
-              request.body.email +
-              '" ...} || Response Status: 200 ## Response Body: ' +
-              JSON.stringify(responseBody)
-          );
+          //console.log(
+            //'POST /login ## Request Body: {"email": "' +
+              //request.body.email +
+              //'" ...} || Response Status: 200 ## Response Body: ' +
+              //JSON.stringify(responseBody)
+          //);
           response.status(200).send(responseBody);
         })
         .catch(() => {
