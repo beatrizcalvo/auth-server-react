@@ -96,10 +96,10 @@ app.post("/login", (request, response) => {
             console.log(
               'POST /login ## Request Body: {"email": "' +
                 request.body.email +
-                '" ...} || Response Status: 404 ## Response Body: ' +
+                '" ...} || Response Status: 400 ## Response Body: ' +
                 JSON.stringify(errorBody.AUTH_API_F_0002()),
             );
-            response.status(500).send(errorBody.AUTH_API_F_0002());
+            response.status(400).send(errorBody.AUTH_API_F_0002());
           }
 
           // Create JWT token
@@ -132,10 +132,10 @@ app.post("/login", (request, response) => {
           console.log(
             'POST /login ## Request Body: {"email": "' +
               request.body.email +
-              '" ...} || Response Status: 404 ## Response Body: ' +
+              '" ...} || Response Status: 400 ## Response Body: ' +
               JSON.stringify(errorBody.AUTH_API_F_0002()),
           );
-          response.status(500).send(errorBody.AUTH_API_F_0002());
+          response.status(400).send(errorBody.AUTH_API_F_0002());
         });
     })
     .catch(() => {
