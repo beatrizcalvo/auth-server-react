@@ -120,7 +120,7 @@ app.post("/login", (request, response) => {
             //token_type: "bearer"
             passwordCheck: passwordCheck
           };
-          console.log(JSON.stringify(responseBody);
+          console.log(JSON.stringify(responseBody));
           //console.log(
             //'POST /login ## Request Body: {"email": "' +
               //request.body.email +
