@@ -37,12 +37,18 @@ app.post("/register", (request, response) => {
   bcrypt
     .hash(request.body.password, 10)
     .then((hashedPassword) => {
+      const firstName = request.body.firstName;
+      const capitalizedFirstName = firstName.charAt(0).toUpperCase() + firstName.slice(1);
+      const lastName = request.body.lastName;
+      const capitalizedLastName = lastName.charAt(0).toUpperCase() + lastName.slice(1);
+      const email = request.body.email.toLowerCase();
+      
       // Save the new user
       userController
         .createUser(
-          request.body.firstName,
-          request.body.lastName,
-          request.body.email.toLowerCase(),
+          capitalizedFirstName,
+          capitalizedLastName,
+          email,
           hashedPassword,
         )
         .then((result) => {
