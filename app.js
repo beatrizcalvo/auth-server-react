@@ -59,7 +59,7 @@ app.post("/register", (request, response) => {
           };
           console.log(
             'POST /register ## Request Body: {"email": "' +
-              request.body.email +
+              email +
               '" ...} || Response Status: 201 ## Response Body: ' +
               JSON.stringify(responseBody),
           );
@@ -69,7 +69,7 @@ app.post("/register", (request, response) => {
           // Catch error if save user in database fails
           console.log(
             'POST /register ## Request Body: {"email": "' +
-              request.body.email +
+              email +
               '" ...} || Response Status: 500 ## Response Body: ' +
               JSON.stringify(errorBody.AUTH_API_T_0002(error.message)),
           );
@@ -80,7 +80,7 @@ app.post("/register", (request, response) => {
       // Catch error if the password hash isn't successful
       console.log(
         'POST /register ## Request Body: {"email": "' +
-          request.body.email +
+          email +
           '" ...} || Response Status: 500 ## Response Body: ' +
           JSON.stringify(errorBody.AUTH_API_T_0001(error.message)),
       );
