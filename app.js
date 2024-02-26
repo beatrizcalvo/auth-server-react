@@ -113,18 +113,15 @@ app.post("/login", (request, response) => {
             {
               iss: "react-test-app",
               sub: user._id
-              //iat: Date.now(),
-              //exp: Date.now() + 1
             },
             process.env.JWT_SECRET_KEY,
-            { expiresIn: '1h' }
+            { expiresIn: '12h' }
           );
           
           // Return success response
           let responseBody = {
             accessToken: token,
-            tokenType: "Bearer",
-            passwordCheck: passwordCheck
+            tokenType: "Bearer"
           };
           
           console.log(
