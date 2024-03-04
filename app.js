@@ -155,4 +155,15 @@ app.post("/login", (request, response) => {
     });
 });
 
+// Verify a JWT 
+app.post("/verify", (request, response) => {
+  const tokenHeaderKey = "jwt-token";
+  const authToken = req.headers[tokenHeaderKey];
+  try {
+    response.status(200).send({});
+  } catch (error) {
+    response.status(401).send({});
+  }
+});
+
 module.exports = app;
