@@ -18,7 +18,7 @@ const loginUser = function (request, response) {
   if (errorsList && errorsList.length() > 0) {
     const responseBody = { errors: errorsList };
     console.error("POST /auth/login ## Request Body: " + JSON.stringify(request.body) + " || Response Status: 400 ## Response Body: " + JSON.stringify(responseBody));
-    response.status(400).send(responseBody);
+    return response.status(400).send(responseBody);
   }
 
   // Check if email exists
@@ -32,7 +32,7 @@ const loginUser = function (request, response) {
       const responseBody = { errors: errorMessages.AUTH_API_F_0002() };
       console.log(errorMessages.AUTH_API_F_0002());
       console.error('POST /login ## Request Body: {"email": "' + email + '" ...} || Response Status: 404 ## Response Body: ' + JSON.stringify(responseBody));
-      response.status(404).send(responseBody);
+      return response.status(404).send(responseBody);
     });
   
   response.status(200).send({result: "OK"});
