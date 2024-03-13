@@ -2,9 +2,10 @@ const errorMessages = require("../constants/errorConstants");
 const userController = require("../db/controllers/userController");
 
 const validateMandatory = function (fieldsList) {
-  return fieldsList.map((item) => {
+  let errorsList = fieldsList.map(item => {
     if (!item.value) return errorMessages.AUTH_API_F_0001(item.key);
   });
+  return errorsList.filter(item => !!item);
 };
 
 const loginUser = function (request, response) {
@@ -21,6 +22,10 @@ const loginUser = function (request, response) {
 
   // Check if email exists
   userController.findByEmail(email.toLowerCase())
+    .then((user) => {
+      // Compare the password entered and the hashed password found
+      
+    })
     .catch(() => {
       // Catch error if email does not exist
       let responseBody = { errors: errorMessages.AUTH_API_F_0002() };
