@@ -16,4 +16,17 @@ const AUTH_API_F_0002 = function () {
   };
 };
 
-module.exports = { AUTH_API_F_0001, AUTH_API_F_0002 };
+const AUTH_API_F_0003 = function () {
+  return {
+    code: "AUTH_API-F-0003",
+    level: "error",
+    message: "Unauthorized",
+    description: "Passwords does not match"
+  };
+};
+
+module.exports = { 
+  AUTH_API_F_0001, 
+  AUTH_API_F_0002,
+  AUTH_API_F_0003
+};
