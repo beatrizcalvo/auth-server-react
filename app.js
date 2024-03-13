@@ -7,6 +7,9 @@ const jwt = require("jsonwebtoken");
 // Require constants declaration
 const errorBody = require("./constants/errorConstants");
 
+// Require controllers declaration
+const authController = require("./controllers/authController");
+
 // Require database connection
 const dbConnect = require("./db/dbConnect");
 const userController = require("./db/controllers/userController");
@@ -88,74 +91,7 @@ app.post("/register", (request, response) => {
     });
 });
 
-// Login an existing user
-app.post("/login", (request, response) => {
-  // Check if email exists
-  userController.findByEmail(request.body.email.toLowerCase())
-    .then((user) => {
-      // Compare the password entered and the hashed password found
-      bcrypt
-        .compare(request.body.password, user.password)
-        .then((passwordCheck) => {
-          // Check if password matches
-          if (!passwordCheck) {
-            console.log(
-              'POST /login ## Request Body: {"email": "' +
-                request.body.email +
-                '" ...} || Response Status: 400 ## Response Body: ' +
-                JSON.stringify(errorBody.AUTH_API_F_0002()),
-            );
-            response.status(400).send(errorBody.AUTH_API_F_0002());
-          }
+app.post("/login", authController.loginUser);
 
-          // Create JWT token
-          const token = jwt.sign(
-            {
-              iss: "react-test-app",
-              sub: user._id
-            },
-            process.env.JWT_SECRET_KEY,
-            { expiresIn: '1h' }
-          );
-          
-          // Return success response
-          let responseBody = {
-            access_token: token,
-            token_type: "Bearer",
-            expires_in: "3600"
-          };
-          
-          console.log(
-            'POST /login ## Request Body: {"email": "' +
-              request.body.email +
-              '" ...} || Response Status: 200 ## Response Body: ' +
-              JSON.stringify(responseBody)
-          );
-          response.status(200).send(responseBody);
-        })
-        .catch(() => {
-          // Catch error if password do not match
-          console.log(
-            'POST /login ## Request Body: {"email": "' +
-              request.body.email +
-              '" ...} || Response Status: 400 ## Response Body: ' +
-              JSON.stringify(errorBody.AUTH_API_F_0002()),
-          );
-          response.status(400).send(errorBody.AUTH_API_F_0002());
-        });
-    })
-    .catch(() => {
-      // Catch error if email does not exist
-      console.log(
-        'POST /login ## Request Body: {"email": "' +
-          request.body.email +
-          '" ...} || Response Status: 404 ## Response Body: ' +
-          JSON.stringify(errorBody.AUTH_API_F_0001()),
-      );
-      response.status(404).send(errorBody.AUTH_API_F_0001());
-    });
-});
-
-// Get current user profile
 
 module.exports = app;
