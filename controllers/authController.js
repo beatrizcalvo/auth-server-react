@@ -13,7 +13,7 @@ const registerUser = function (request, response) {
   response.status(200).send({result: "OK"});
 };
 
-const loginUser = async function (request, response) {
+const loginUser = function (request, response) {
   const email = request.body.email;
   const password = request.body.password;
   
@@ -29,7 +29,7 @@ const loginUser = async function (request, response) {
   userController.findByEmail(email.toLowerCase())
     .then((user) => {
       // Compare the password entered and the hashed password found
-      const isValid = await bcrypt.compare(password, user.password);
+      const isValid = bcrypt.compare(password, user.password);
       if (!isValid) {
         const responseBody = {errors: errorMessages.AUTH_API_F_0003() };
         console.error('POST /auth/login ## Request Body: {"email": "' + email + '" ...} || Response Status: 401 ## Response Body: ' + JSON.stringify(responseBody));
@@ -46,7 +46,14 @@ const loginUser = async function (request, response) {
         { expiresIn: '1h' }
       );
 
-      return response.status(200).send({});
+      // Return success response
+      const responseBody = {
+        access_token: token,
+        token_type: "Bearer",
+        expires_in: "3600"
+      };
+      console.log('POST /auth/login ## Request Body: {"email": "' + email + '" ...} || Response Status: 200 ## Response Body: ' + JSON.stringify(responseBody));
+      return response.status(200).send(responseBody);
     })
     .catch(() => {
       // Catch error if email does not exist
