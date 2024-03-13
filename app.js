@@ -115,13 +115,14 @@ app.post("/login", (request, response) => {
               sub: user._id
             },
             process.env.JWT_SECRET_KEY,
-            { expiresIn: '12h' }
+            { expiresIn: '1h' }
           );
           
           // Return success response
           let responseBody = {
-            accessToken: token,
-            tokenType: "Bearer"
+            access_token: token,
+            token_type: "Bearer",
+            expires_in: "3600"
           };
           
           console.log(
@@ -154,5 +155,7 @@ app.post("/login", (request, response) => {
       response.status(404).send(errorBody.AUTH_API_F_0001());
     });
 });
+
+// Get current user profile
 
 module.exports = app;
