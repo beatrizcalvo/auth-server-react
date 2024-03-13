@@ -2,9 +2,9 @@ const errorMessages = require("../constants/errorConstants");
 const userController = require("../db/controllers/userController");
 
 const validateMandatory = function (fieldsList) {
-  fieldsList.map((key, value) => {
-    console.log("key: " + key + " value: " + value);
-    if (!value) return errorMessages.AUTH_API_F_0001(key);
+  fieldsList.map((item) => {
+    console.log("key: " + item.key + " value: " + item.value);
+    if (!item.value) return errorMessages.AUTH_API_F_0001(item.key);
   });
 };
 
