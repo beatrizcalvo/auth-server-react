@@ -1,3 +1,4 @@
+const bcrypt = require("bcrypt");
 const errorMessages = require("../constants/errorConstants");
 const userController = require("../db/controllers/userController");
 
@@ -9,13 +10,13 @@ const validateMandatory = function (fieldsList) {
 };
 
 const loginUser = function (request, response) {
-  let email = request.body.email;
-  let password = request.body.password;
+  const email = request.body.email;
+  const password = request.body.password;
   
   // Check mandatory inputs
-  let errorsList = validateMandatory([{key: "email", value: email}, {key: "password", value: password}]);
+  const errorsList = validateMandatory([{key: "email", value: email}, {key: "password", value: password}]);
   if (!!errorsList) {
-    let responseBody = { errors: errorsList };
+    const responseBody = { errors: errorsList };
     console.error("POST /auth/login ## Request Body: " + JSON.stringify(request.body) + " || Response Status: 400 ## Response Body: " + JSON.stringify(responseBody));
     response.status(400).send(responseBody);
   }
@@ -24,11 +25,12 @@ const loginUser = function (request, response) {
   userController.findByEmail(email.toLowerCase())
     .then((user) => {
       // Compare the password entered and the hashed password found
-      
+      bcrypt.compare(password, user.password).then().catch();
     })
     .catch(() => {
       // Catch error if email does not exist
-      let responseBody = { errors: errorMessages.AUTH_API_F_0002() };
+      const responseBody = { errors: errorMessages.AUTH_API_F_0002() };
+      console.log(errorMessages.AUTH_API_F_0002());
       console.error('POST /login ## Request Body: {"email": "' + email + '" ...} || Response Status: 404 ## Response Body: ' + JSON.stringify(responseBody));
       response.status(404).send(responseBody);
     });
