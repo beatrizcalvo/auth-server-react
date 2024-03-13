@@ -10,6 +10,19 @@ const validateMandatory = function (fieldsList) {
 };
 
 const registerUser = function (request, response) {
+  const firstName = request.body.firstName;
+  const lastName = request.body.lastName;
+  const email = request.body.email;
+  const password = request.body.password;
+
+  // Check mandatory inputs
+  const errorsList = validateMandatory([{key: "firstName", value: firstName}, {key: "lastName", value: lastName}, {key: "email", value: email}, {key: "password", value: password}]);
+  if (errorsList.length !== 0) {
+    const responseBody = { errors: errorsList };
+    console.error("POST /auth/register ## Request Body: " + JSON.stringify(request.body) + " || Response Status: 400 ## Response Body: " + JSON.stringify(responseBody));
+    return response.status(400).send(responseBody);
+  }
+  
   response.status(200).send({result: "OK"});
 };
 
