@@ -50,14 +50,17 @@ const loginUser = function (request, response) {
   userController.findByEmail(email.toLowerCase())
     .then((user) => {
       // Compare the password entered and the hashed password found
-      const isValid = bcrypt.compare(password, user.password);
-      if (!isValid) {
-        const responseBody = { errors: errorMessages.AUTH_API_F_0003() };
-        console.error('POST /auth/login ## Request Body: {"email": "' + email + '" ...} || Response Status: 401 ## Response Body: ' + JSON.stringify(responseBody));
-        return response.status(401).send(responseBody);
-      }
+      bcrypt
+        .compare(password, user.password)
+        .then(isMatch => {
+          // Check if password matches
+          if (!isMatch) {
+            const responseBody = { errors: errorMessages.AUTH_API_F_0003() };
+            console.error('POST /auth/login ## Request Body: {"email": "' + email + '" ...} || Response Status: 401 ## Response Body: ' + JSON.stringify(responseBody));
+            return response.status(401).send(responseBody);
+          }
 
-      // Create JWT token
+          // Create JWT token
           const token = jwt.sign(
             { iss: "react-test-app", sub: user._id },
             process.env.JWT_SECRET_KEY,
@@ -72,6 +75,13 @@ const loginUser = function (request, response) {
           };
           console.error('POST /auth/login ## Request Body: {"email": "' + email + '" ...} || Response Status: 200 ## Response Body: ' + JSON.stringify(responseBody));
           return response.status(200).send(responseBody);
+        })
+        .catch(() => {
+          // Catch error if password do not match
+          const responseBody = { errors: errorMessages.AUTH_API_F_0003() };
+          console.error('POST /auth/login ## Request Body: {"email": "' + email + '" ...} || Response Status: 401 ## Response Body: ' + JSON.stringify(responseBody));
+          return response.status(401).send(responseBody);
+        });
     })
     .catch(() => {
       // Catch error if email does not exist
