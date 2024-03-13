@@ -42,8 +42,12 @@ const loginUser = function (request, response) {
   userController.findByEmail(email.toLowerCase())
     .then((user) => {
       // Compare the password entered and the hashed password found
-      
-      return response.status(200).send({});
+      bcrypt
+        .compare(password, user.password)
+        .then(isMatch => {return response.status(200).send({});})
+        .catch(() => {
+          return response.status(500).send({"result": "error"});
+        });
     })
     .catch(() => {
       // Catch error if email does not exist
