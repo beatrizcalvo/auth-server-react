@@ -3,7 +3,7 @@ const errorMessages = require("../constants/errorConstants");
 const userController = require("../db/controllers/userController");
 
 const validateMandatory = function (fieldsList) {
-  let errorsList = fieldsList.map(item => {
+  const errorsList = fieldsList.map(item => {
     if (!item.value) return errorMessages.AUTH_API_F_0001(item.key);
   });
   return errorsList.filter(item => !!item);
@@ -39,11 +39,9 @@ const loginUser = function (request, response) {
     .catch(() => {
       // Catch error if email does not exist
       const responseBody = { errors: errorMessages.AUTH_API_F_0002() };
-      console.error('POST /login ## Request Body: {"email": "' + email + '" ...} || Response Status: 404 ## Response Body: ' + JSON.stringify(responseBody));
+      console.error('POST /login ## Request Body: {"email": "' + email + '" ...} || Response Status: 400 ## Response Body: ' + JSON.stringify(responseBody));
       return response.status(400).send(responseBody);
     });
-  
-  response.status(200).send({result: "OK"});
 };
 
 module.exports = { loginUser, registerUser };
