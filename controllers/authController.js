@@ -36,6 +36,10 @@ const loginUser = function (request, response) {
         return response.status(401).send(responseBody);
       }
 
+      const payload = {
+        
+      };
+
       return response.status(200).send({});
     })
     .catch(() => {
