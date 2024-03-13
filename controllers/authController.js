@@ -49,16 +49,30 @@ const loginUser = function (request, response) {
           if (!isMatch) {
             const responseBody = { errors: errorMessages.AUTH_API_F_0003() };
             console.error('POST /auth/login ## Request Body: {"email": "' + email + '" ...} || Response Status: 401 ## Response Body: ' + JSON.stringify(responseBody));
-            return response.status(401).send({"result": "error"});
+            return response.status(401).send(responseBody);
           }
-          
-          return response.status(200).send({});
+
+          // Create JWT token
+          const token = jwt.sign(
+            { iss: "react-test-app", sub: user._id },
+            process.env.JWT_SECRET_KEY,
+            { expiresIn: '1h' }
+          );
+
+          // Return success response
+          let responseBody = {
+            access_token: token,
+            token_type: "Bearer",
+            expires_in: "3600"
+          };
+          console.error('POST /auth/login ## Request Body: {"email": "' + email + '" ...} || Response Status: 200 ## Response Body: ' + JSON.stringify(responseBody));
+          return response.status(200).send(responseBody);
         })
         .catch(() => {
           // Catch error if password do not match
           const responseBody = { errors: errorMessages.AUTH_API_F_0003() };
           console.error('POST /auth/login ## Request Body: {"email": "' + email + '" ...} || Response Status: 401 ## Response Body: ' + JSON.stringify(responseBody));
-          return response.status(401).send({"result": "error"});
+          return response.status(401).send(responseBody);
         });
     })
     .catch(() => {
