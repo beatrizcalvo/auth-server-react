@@ -29,14 +29,14 @@ const loginUser = function (request, response) {
   userController.findByEmail(email.toLowerCase())
     .then((user) => {
       // Compare the password entered and the hashed password found
-      bcrypt.compare(password, user.password)
-        .then()
-        .catch(() => {
-          // Catch error if password do not match
-          const responseBody = {};
-          console.log('POST /auth/login ## Request Body: {"email": "' + email + '" ...} || Response Status: 401 ## Response Body: ' + JSON.stringify(responseBody));
-          return response.status(401).send(responseBody);
-        });
+      const isValid = await bcrypt.compare(password, user.password);
+      if (!isValid) {
+        const responseBody = {};
+        console.error('POST /auth/login ## Request Body: {"email": "' + email + '" ...} || Response Status: 401 ## Response Body: ' + JSON.stringify(responseBody));
+        return response.status(401).send(responseBody);
+      }
+
+      return response.status(200).send({});
     })
     .catch(() => {
       // Catch error if email does not exist
