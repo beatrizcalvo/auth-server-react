@@ -9,6 +9,10 @@ const validateMandatory = function (fieldsList) {
   return errorsList.filter(item => !!item);
 };
 
+const registerUser = function (request, response) {
+  response.status(200).send({result: "OK"});
+};
+
 const loginUser = function (request, response) {
   let email = request.body.email;
   let password = request.body.password;
@@ -25,7 +29,11 @@ const loginUser = function (request, response) {
   userController.findByEmail(email.toLowerCase())
     .then((user) => {
       // Compare the password entered and the hashed password found
-      bcrypt.compare(password, user.password).then().catch();
+      bcrypt.compare(password, user.password).then()
+        .catch(() => {
+          // Catch error if password do not match
+          console.log("error password");
+        });
     })
     .catch(() => {
       // Catch error if email does not exist
@@ -38,4 +46,4 @@ const loginUser = function (request, response) {
   response.status(200).send({result: "OK"});
 };
 
-module.exports = { loginUser };
+module.exports = { loginUser, registerUser };
