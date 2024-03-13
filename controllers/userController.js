@@ -1,4 +1,4 @@
-const currentUserProfile = function (request, response) {
+const currentUserProfile = function (request, response, next) {
   return response.status(200).send({});
 };
 
