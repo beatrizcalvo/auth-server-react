@@ -26,10 +26,25 @@ const registerUser = function (request, response) {
   // Hash the password
   bcrypt
     .hash(request.body.password, 10)
-    .then()
+    .then(hashedPassword => {
+      const capitalizedFirstName = firstName.charAt(0).toUpperCase() + firstName.slice(1);
+      const capitalizedLastName = lastName.charAt(0).toUpperCase() + lastName.slice(1);
+
+      // Save the new user
+      userController.createUser(capitalizedFirstName, capitalizedLastName, email, hashedPassword)
+        .then()
+        .catch(error => {
+          // Catch error if save user in database fails
+          const responseBody = { errors: []};
+          console.error('POST /auth/register ## Request Body: {"firstName": "' + firstName + '", "lastName": "' + lastName + '", "email": "' + email + '" ...} || Response Status: 500 ## Response Body: ' + JSON.stringify(errorBody.AUTH_API_T_0001(error.message)));
+          return response.status(500).send(responseBody);
+        });
+    })
     .catch(error => {
       // Catch error if the password hash isn't successful
-      const responseBody = {};
+      const responseBody = { errors: [errorMessages.AUTH_API_T_0001(error.message)] };
+      console.error('POST /auth/register ## Request Body: {"firstName": "' + firstName + '", "lastName": "' + lastName + '", "email": "' + email + '" ...} || Response Status: 500 ## Response Body: ' + JSON.stringify(errorBody.AUTH_API_T_0001(error.message)));
+      return response.status(500).send(responseBody);
     });
   response.status(200).send({result: "OK"});
 };
@@ -55,7 +70,7 @@ const loginUser = function (request, response) {
         .then(isMatch => {
           // Check if password matches
           if (!isMatch) {
-            const responseBody = { errors: errorMessages.AUTH_API_F_0003() };
+            const responseBody = { errors: [errorMessages.AUTH_API_F_0003()] };
             console.error('POST /auth/login ## Request Body: {"email": "' + email + '" ...} || Response Status: 401 ## Response Body: ' + JSON.stringify(responseBody));
             return response.status(401).send(responseBody);
           }
@@ -78,14 +93,14 @@ const loginUser = function (request, response) {
         })
         .catch(() => {
           // Catch error if password do not match
-          const responseBody = { errors: errorMessages.AUTH_API_F_0003() };
+          const responseBody = { errors: [errorMessages.AUTH_API_F_0003()] };
           console.error('POST /auth/login ## Request Body: {"email": "' + email + '" ...} || Response Status: 401 ## Response Body: ' + JSON.stringify(responseBody));
           return response.status(401).send(responseBody);
         });
     })
     .catch(() => {
       // Catch error if email does not exist
-      const responseBody = { errors: errorMessages.AUTH_API_F_0002() };
+      const responseBody = { errors: [errorMessages.AUTH_API_F_0002()] };
       console.error('POST /auth/login ## Request Body: {"email": "' + email + '" ...} || Response Status: 400 ## Response Body: ' + JSON.stringify(responseBody));
       return response.status(400).send(responseBody);
     });
