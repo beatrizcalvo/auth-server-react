@@ -1,5 +1,7 @@
+require("dotenv").config();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+
 const errorMessages = require("../constants/errorConstants");
 const userController = require("../db/controllers/userController");
 
@@ -26,7 +28,7 @@ const registerUser = function (request, response) {
 
   // Hash the password
   bcrypt
-    .hash(request.body.password, 10)
+    .hash(password, 10)
     .then(hashedPassword => {
       const capitalizedFirstName = firstName.charAt(0).toUpperCase() + firstName.slice(1);
       const capitalizedLastName = lastName.charAt(0).toUpperCase() + lastName.slice(1);
