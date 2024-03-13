@@ -25,5 +25,6 @@ server.headersTimeout = 120 * 1000;
 
 // App Routes
 app.post("/auth/login", authController.loginUser);
+app.post("/auth/register", authController.registerUser);
 
 module.exports = app;
