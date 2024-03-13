@@ -1,7 +1,4 @@
-// Import required controllers
-const autenticateToken = require("./middleware/autenticateToken");
-const authController = require("./controllers/authController");
-const userController = require("./controllers/userController");
+require("dotenv").config();
 
 // Execute database connection
 const dbConnect = require("./db/dbConnect");
@@ -26,8 +23,6 @@ server.keepAliveTimeout = 120 * 1000;
 server.headersTimeout = 120 * 1000;
 
 // App Routes
-app.post("/auth/login", authController.loginUser);
-app.post("/auth/register", authController.registerUser);
-app.get("/users/me", authenticateToken, userController.currentUserProfile);
+
 
 module.exports = app;
