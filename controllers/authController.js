@@ -32,10 +32,12 @@ const registerUser = function (request, response) {
 
       // Save the new user
       userController.createUser(capitalizedFirstName, capitalizedLastName, email, hashedPassword)
-        .then()
+        .then(result => {
+          return response.status(200).send({result: "OK"});
+        })
         .catch(error => {
           // Catch error if save user in database fails
-          const responseBody = { errors: []};
+          const responseBody = { errors: [errorMessages.AUTH_API_T_0002(error.message)]};
           console.error('POST /auth/register ## Request Body: {"firstName": "' + firstName + '", "lastName": "' + lastName + '", "email": "' + email + '" ...} || Response Status: 500 ## Response Body: ' + JSON.stringify(errorBody.AUTH_API_T_0001(error.message)));
           return response.status(500).send(responseBody);
         });
@@ -46,7 +48,6 @@ const registerUser = function (request, response) {
       console.error('POST /auth/register ## Request Body: {"firstName": "' + firstName + '", "lastName": "' + lastName + '", "email": "' + email + '" ...} || Response Status: 500 ## Response Body: ' + JSON.stringify(errorBody.AUTH_API_T_0001(error.message)));
       return response.status(500).send(responseBody);
     });
-  response.status(200).send({result: "OK"});
 };
 
 const loginUser = function (request, response) {
