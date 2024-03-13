@@ -33,19 +33,25 @@ const registerUser = function (request, response) {
       // Save the new user
       userController.createUser(capitalizedFirstName, capitalizedLastName, email, hashedPassword)
         .then(result => {
-          return response.status(200).send({result: "OK"});
+          const responseBody = {
+            id: result._id,
+            email: result.email,
+            createdAt: result.createdAt,
+          };
+          console.error('POST /auth/register ## Request Body: {"firstName": "' + firstName + '", "lastName": "' + lastName + '", "email": "' + email + '" ...} || Response Status: 201 ## Response Body: ' + JSON.stringify(responseBody));
+          return response.status(201).send(responseBody);
         })
         .catch(error => {
           // Catch error if save user in database fails
           const responseBody = { errors: [errorMessages.AUTH_API_T_0002(error.message)]};
-          console.error('POST /auth/register ## Request Body: {"firstName": "' + firstName + '", "lastName": "' + lastName + '", "email": "' + email + '" ...} || Response Status: 500 ## Response Body: ' + JSON.stringify(errorBody.AUTH_API_T_0001(error.message)));
+          console.error('POST /auth/register ## Request Body: {"firstName": "' + firstName + '", "lastName": "' + lastName + '", "email": "' + email + '" ...} || Response Status: 500 ## Response Body: ' + JSON.stringify(responseBody));
           return response.status(500).send(responseBody);
         });
     })
     .catch(error => {
       // Catch error if the password hash isn't successful
       const responseBody = { errors: [errorMessages.AUTH_API_T_0001(error.message)] };
-      console.error('POST /auth/register ## Request Body: {"firstName": "' + firstName + '", "lastName": "' + lastName + '", "email": "' + email + '" ...} || Response Status: 500 ## Response Body: ' + JSON.stringify(errorBody.AUTH_API_T_0001(error.message)));
+      console.error('POST /auth/register ## Request Body: {"firstName": "' + firstName + '", "lastName": "' + lastName + '", "email": "' + email + '" ...} || Response Status: 500 ## Response Body: ' + JSON.stringify(responseBody));
       return response.status(500).send(responseBody);
     });
 };
@@ -84,7 +90,7 @@ const loginUser = function (request, response) {
           );
 
           // Return success response
-          let responseBody = {
+          const responseBody = {
             access_token: token,
             token_type: "Bearer",
             expires_in: "3600"
