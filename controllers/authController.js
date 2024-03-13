@@ -13,7 +13,7 @@ const registerUser = function (request, response) {
   response.status(200).send({result: "OK"});
 };
 
-const loginUser = function (request, response) {
+const loginUser = async function (request, response) {
   const email = request.body.email;
   const password = request.body.password;
   
