@@ -44,7 +44,16 @@ const loginUser = function (request, response) {
       // Compare the password entered and the hashed password found
       bcrypt
         .compare(password, user.password)
-        .then(isMatch => {return response.status(200).send({});})
+        .then(isMatch => {
+          // Check if password matches
+          if (!isMatch) {
+            const responseBody = { errors: errorMessages.AUTH_API_F_0003() };
+            console.error('POST /auth/login ## Request Body: {"email": "' + email + '" ...} || Response Status: 401 ## Response Body: ' + JSON.stringify(responseBody));
+            return response.status(401).send({"result": "error"});
+          }
+          
+          return response.status(200).send({});
+        })
         .catch(() => {
           // Catch error if password do not match
           const responseBody = { errors: errorMessages.AUTH_API_F_0003() };
