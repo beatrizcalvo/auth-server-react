@@ -46,13 +46,16 @@ const loginUser = function (request, response) {
         .compare(password, user.password)
         .then(isMatch => {return response.status(200).send({});})
         .catch(() => {
-          return response.status(500).send({"result": "error"});
+          // Catch error if password do not match
+          const responseBody = { errors: errorMessages.AUTH_API_F_0003() };
+          console.error('POST /auth/login ## Request Body: {"email": "' + email + '" ...} || Response Status: 401 ## Response Body: ' + JSON.stringify(responseBody));
+          return response.status(401).send({"result": "error"});
         });
     })
     .catch(() => {
       // Catch error if email does not exist
       const responseBody = { errors: errorMessages.AUTH_API_F_0002() };
-      console.error('POST /login ## Request Body: {"email": "' + email + '" ...} || Response Status: 400 ## Response Body: ' + JSON.stringify(responseBody));
+      console.error('POST /auth/login ## Request Body: {"email": "' + email + '" ...} || Response Status: 400 ## Response Body: ' + JSON.stringify(responseBody));
       return response.status(400).send(responseBody);
     });
 };
