@@ -10,13 +10,14 @@ const validateMandatory = function (fieldsList) {
 };
 
 const loginUser = function (request, response) {
-  const email = request.body.email;
-  const password = request.body.password;
+  let email = request.body.email;
+  let password = request.body.password;
   
   // Check mandatory inputs
-  const errorsList = validateMandatory([{key: "email", value: email}, {key: "password", value: password}]);
+  let errorsList = validateMandatory([{key: "email", value: email}, {key: "password", value: password}]);
+  console.log(errorsList);
   if (errorsList && errorsList.length() > 0) {
-    const responseBody = { errors: errorsList };
+    let responseBody = { errors: errorsList };
     console.error("POST /auth/login ## Request Body: " + JSON.stringify(request.body) + " || Response Status: 400 ## Response Body: " + JSON.stringify(responseBody));
     return response.status(400).send(responseBody);
   }
@@ -29,7 +30,7 @@ const loginUser = function (request, response) {
     })
     .catch(() => {
       // Catch error if email does not exist
-      const responseBody = { errors: errorMessages.AUTH_API_F_0002() };
+      let responseBody = { errors: errorMessages.AUTH_API_F_0002() };
       console.log(errorMessages.AUTH_API_F_0002());
       console.error('POST /login ## Request Body: {"email": "' + email + '" ...} || Response Status: 404 ## Response Body: ' + JSON.stringify(responseBody));
       return response.status(404).send(responseBody);
