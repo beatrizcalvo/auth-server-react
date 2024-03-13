@@ -1,5 +1,6 @@
 // Import required controllers
 const authController = require("./controllers/authController");
+const userController = require("./controllers/userController");
 
 // Execute database connection
 const dbConnect = require("./db/dbConnect");
@@ -26,5 +27,6 @@ server.headersTimeout = 120 * 1000;
 // App Routes
 app.post("/auth/login", authController.loginUser);
 app.post("/auth/register", authController.registerUser);
+app.get("/users/me", userController.currentUserProfile);
 
 module.exports = app;
