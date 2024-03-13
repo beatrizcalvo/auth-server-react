@@ -29,7 +29,8 @@ const loginUser = function (request, response) {
   userController.findByEmail(email.toLowerCase())
     .then((user) => {
       // Compare the password entered and the hashed password found
-      bcrypt.compare(password, user.password).then()
+      bcrypt.compare(password, user.password)
+        .then()
         .catch(() => {
           // Catch error if password do not match
           console.log("error password");
