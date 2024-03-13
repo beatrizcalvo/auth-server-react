@@ -31,14 +31,20 @@ const loginUser = async function (request, response) {
       // Compare the password entered and the hashed password found
       const isValid = await bcrypt.compare(password, user.password);
       if (!isValid) {
-        const responseBody = {};
+        const responseBody = {errors: errorMessages.AUTH_API_F_0003() };
         console.error('POST /auth/login ## Request Body: {"email": "' + email + '" ...} || Response Status: 401 ## Response Body: ' + JSON.stringify(responseBody));
         return response.status(401).send(responseBody);
       }
 
-      const payload = {
-        
-      };
+      // Create JWT token
+      const token = jwt.sign(
+        {
+          iss: "react-test-app",
+          sub: user._id
+        },
+        process.env.JWT_SECRET_KEY,
+        { expiresIn: '1h' }
+      );
 
       return response.status(200).send({});
     })
