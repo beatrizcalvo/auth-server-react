@@ -1,3 +1,6 @@
+// Import required controllers
+const authController = require("./controllers/authController");
+
 // Execute database connection
 const dbConnect = require("./db/dbConnect");
 dbConnect();
