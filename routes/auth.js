@@ -9,7 +9,7 @@ router.post("/login", async (request, response) => {
   try {
     const error = schemaLogin.validate(request.body);
     if (error) {
-      
+      response.status(400).send(error);
     }
   } catch (error) {
     const responseBody = { errors: [errorMessages.AUTH_API_T_0001(error.message.replaceAll('"', "'"))] };
