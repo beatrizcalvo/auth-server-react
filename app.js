@@ -91,7 +91,7 @@ app.post("/register", (request, response) => {
     });
 });
 
-app.post("/login", authController.loginUser);
+app.post("/auth/login", authController.loginUser);
 
 
 module.exports = app;
