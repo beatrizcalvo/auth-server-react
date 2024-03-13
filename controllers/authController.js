@@ -33,7 +33,9 @@ const loginUser = function (request, response) {
         .then()
         .catch(() => {
           // Catch error if password do not match
-          console.log("error password");
+          const responseBody = {};
+          console.log('POST /auth/login ## Request Body: {"email": "' + email + '" ...} || Response Status: 401 ## Response Body: ' + JSON.stringify(responseBody));
+          return response.status(401).send(responseBody);
         });
     })
     .catch(() => {
