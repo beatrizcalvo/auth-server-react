@@ -1,4 +1,5 @@
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const errorMessages = require("../constants/errorConstants");
 const userController = require("../db/controllers/userController");
 
