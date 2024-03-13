@@ -7,4 +7,13 @@ const AUTH_API_F_0001 = function (field) {
   };
 };
 
-module.exports = { AUTH_API_F_0001 };
+const AUTH_API_F_0002 = function () {
+  return {
+    code: "AUTH_API-F-0002",
+    level: "error",
+    message: "Application login error",
+    description: "Email not found"
+  };
+};
+
+module.exports = { AUTH_API_F_0001, AUTH_API_F_0002 };
