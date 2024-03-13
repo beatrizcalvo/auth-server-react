@@ -15,8 +15,7 @@ const loginUser = function (request, response) {
   
   // Check mandatory inputs
   let errorsList = validateMandatory([{key: "email", value: email}, {key: "password", value: password}]);
-  console.log(errorsList);
-  if (errorsList && errorsList.length() > 0) {
+  if (errorsList.length !== 0) {
     let responseBody = { errors: errorsList };
     console.error("POST /auth/login ## Request Body: " + JSON.stringify(request.body) + " || Response Status: 400 ## Response Body: " + JSON.stringify(responseBody));
     return response.status(400).send(responseBody);
