@@ -35,7 +35,6 @@ const createValidationErrors = function (error) {
         break;
     }
   });
-  console.log(listErrors);
   return listErrors;
 };
 
