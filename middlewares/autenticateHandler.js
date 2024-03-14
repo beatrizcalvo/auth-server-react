@@ -3,6 +3,7 @@ const createHttpError = require('http-errors');
 const jwt = require("jsonwebtoken");
 
 const errorMessages = require("../constants/errorConstants");
+const userController = require("../db/controllers/userController");
 
 const autenticateHandler = (req, res, next) => {
   // Get the token from the Authorization header and validate
@@ -17,6 +18,9 @@ const autenticateHandler = (req, res, next) => {
   jwt.verify(token, process.env.JWT_SECRET_KEY)
     .then(decodedToken => {
       // Check if a user with this id exists in the database
+      userController.findById(decodedToken.sub)
+        .then(() => next())
+        .catch(() => next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0007()]))));
     })
     .catch(() => {
       next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0007()])));
