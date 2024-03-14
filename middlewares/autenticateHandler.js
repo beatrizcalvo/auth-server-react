@@ -1,4 +1,4 @@
-const autenticateHandler = async (req, res, next) {
+const autenticateHandler = async (req, res, next) => {
   console.log("Enter autenticateToken middleware");
   next();
 };
