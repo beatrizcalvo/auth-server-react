@@ -19,7 +19,10 @@ const autenticateHandler = (req, res, next) => {
     .then(decodedToken => {
       // Check if a user with this id exists in the database
       userController.findById(decodedToken.sub)
-        .then(() => next())
+        .then(() => {
+          req.currentUserId = decodedToken.sub;
+          next();
+        })
         .catch(() => next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0007()]))));
     })
     .catch(() => {
