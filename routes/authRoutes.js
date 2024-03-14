@@ -1,3 +1,4 @@
+const createHttpError = require('http-errors');
 const express = require("express");
 const router = express.Router();
 
@@ -16,7 +17,7 @@ router.post("/login", validateRequest(loginSchema), async (req, res, next) => {
         res.status(200).send({});
       })
       .catch(error => {
-        
+        next(createHttpError(400, JSON.stringify([errorMessages.AUTH_API_F_0005()])));
       });
     
   } catch (error) {
