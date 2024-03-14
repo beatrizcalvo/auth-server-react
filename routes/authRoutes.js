@@ -20,6 +20,7 @@ router.post("/login", validateRequest(loginSchema), async (req, res, next) => {
       .then(user => {
         // Compare the password entered and the hashed password found
         const isMatch = bcrypt.compare(password, user.password);
+        console.log(isMatch);
         if (!isMatch) return next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0006()])));
 
         // Create JWT token
