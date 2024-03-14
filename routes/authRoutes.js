@@ -23,7 +23,7 @@ router.post("/login", validateRequest(loginSchema), async (req, res, next) => {
         if (!isMatch) {}
         res.status(200).send({});
       })
-      .catch(error => {
+      .catch(() => {
         next(createHttpError(400, JSON.stringify([errorMessages.AUTH_API_F_0005()])));
       });
     
