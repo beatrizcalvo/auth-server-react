@@ -1,7 +1,7 @@
 require("dotenv").config();
 
 // Routes dependencies
-const authRoutes = require("./routes/auth");
+const authRoutes = require("./routes/authRoutes");
 
 // Execute database connection
 const dbConnect = require("./db/dbConnect");
