@@ -26,8 +26,10 @@ server.headersTimeout = 120 * 1000;
 const autenticateHandler = require("./middlewares/autenticateHandler");
 const errorHandler = require("./middlewares/errorHandler");
 const authRoutes = require("./routes/authRoutes");
+const userRoutes = require("./routes/userRoutes");
 
 // Bind App Routes
 app.use("/auth", authRoutes, errorHandler);
+app.use("/users", autenticateHandler, authRoutes, errorHandler);
 
 module.exports = app;
