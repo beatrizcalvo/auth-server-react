@@ -31,4 +31,8 @@ const findByEmail = function (email) {
   return User.findOne({ email: email });
 };
 
-module.exports = { createUser, findByEmail };
+const findById = function (id) {
+  return User.findUnique({ _id: id });
+};
+
+module.exports = { createUser, findByEmail, findById };
