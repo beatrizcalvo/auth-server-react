@@ -20,8 +20,7 @@ router.post("/login", validateRequest(loginSchema), async (req, res, next) => {
       .then(user => {
         // Compare the password entered and the hashed password found
         const isMatch = bcrypt.compare(password, user.password);
-        if (!isMatch) next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0006()])));
-        console.log(isMatch);
+        if (!isMatch) return next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0006()])));
 
         // Create JWT token
         const token = jwt.sign(
@@ -36,13 +35,12 @@ router.post("/login", validateRequest(loginSchema), async (req, res, next) => {
           token_type: "Bearer",
           expires_in: "3600"
         };
-        console.error('POST /auth/login ## Request Body: {"email": "' + email + '" ...} || Response Status: 200 ## Response Body: ' + JSON.stringify(responseBody));
+        console.log('POST /auth/login ## Request Body: {"email": "' + email + '" ...} || Response Status: 200 ## Response Body: ' + JSON.stringify(responseBody));
         res.status(200).send(responseBody);
       })
       .catch(() => {
         next(createHttpError(400, JSON.stringify([errorMessages.AUTH_API_F_0005()])));
-      });
-    
+      });    
   } catch (error) {
     next(createHttpError(500, error));
   }
@@ -50,12 +48,32 @@ router.post("/login", validateRequest(loginSchema), async (req, res, next) => {
 
 router.post("/register", validateRequest(registerSchema), async (req, res, next) => {
   try {
+    const firstName = req.body.firstName;
+    const capitalizedFirstName = firstName.charAt(0).toUpperCase() + firstName.slice(1);
+    const lastName = req.body.lastName;
+    const capitalizedLastName = lastName.charAt(0).toUpperCase() + lastName.slice(1);
+    const email = req.body.email.toLowerCase();
+    const password = req.body.password;
+    
     // Hash the password
     const hashedPassword = bcrypt.hash(password, 10);
-    
-    res.status(200).send({});
+
+    // Save the new user
+    userController.createUser(capitalizedFirstName, capitalizedLastName, email, hashedPassword)
+      .then(result => {
+        const responseBody = {
+          id: result._id,
+          email: result.email,
+          createdAt: result.createdAt
+        };
+        console.log('POST /auth/register ## Request Body: {"firstName": "' + firstName + '", "lastName": "' + lastName + '", "email": "' + email + '" ...} || Response Status: 201 ## Response Body: ' + JSON.stringify(responseBody));
+        res.status(201).send(responseBody);
+      })
+      .catch(() => {
+        next(createHttpError(500, JSON.stringify([errorMessages.AUTH_API_T_0002()])));
+      });    
   } catch (error) {
-    next(error);
+    next(createHttpError(500, error));
   }
 });
 
