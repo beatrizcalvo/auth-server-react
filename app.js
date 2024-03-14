@@ -1,8 +1,5 @@
 require("dotenv").config();
 
-// Routes dependencies
-const authRoutes = require("./routes/authRoutes");
-
 // Execute database connection
 const dbConnect = require("./db/dbConnect");
 dbConnect();
@@ -25,7 +22,10 @@ const server = app.listen(port, () =>
 server.keepAliveTimeout = 120 * 1000;
 server.headersTimeout = 120 * 1000;
 
-// App Routes
+// Routes dependencies
+const authRoutes = require("./routes/authRoutes");
+
+// Bind App Routes
 app.use("/auth", authRoutes);
 
 module.exports = app;
