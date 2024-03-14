@@ -16,7 +16,7 @@ const validateRequest = (schema) => async function (req, res, next) {
 const createValidationErrors = function (error) {
   return error.details.map(err => {
     switch (err.type) {
-      "any.required":
+      case "any.required":
         return errorMessages.AUTH_API_F_0001(err.path.join("."));
       default: 
         return err;
