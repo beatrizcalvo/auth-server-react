@@ -9,11 +9,10 @@ router.post("/login", validateRequest(loginSchema), async (req, res) => {
   const password = req.body.password;
   
   try {
+    throw Error("Prueba error");
     res.status(200).send({});
   } catch (error) {
-    const responseBody = { errors: [errorMessages.AUTH_API_T_0001(error.message.replaceAll('"', "'"))] };
-    console.error('POST /auth/login ## Request Body: {"email": "' + email + '" ...} || Response Status: 500 ## Response Body: ' + JSON.stringify(responseBody));
-    res.status(500).send(responseBody);
+    next(error);
   }
 });
 
