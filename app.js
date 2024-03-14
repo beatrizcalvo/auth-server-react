@@ -23,6 +23,7 @@ server.keepAliveTimeout = 120 * 1000;
 server.headersTimeout = 120 * 1000;
 
 // Routes and middlewares dependencies
+const autenticateHandler = require("./middlewares/autenticateHandler");
 const errorHandler = require("./middlewares/errorHandler");
 const authRoutes = require("./routes/authRoutes");
 
