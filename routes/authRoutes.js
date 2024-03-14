@@ -3,7 +3,7 @@ const router = express.Router();
 
 const errorMessages = require("../constants/errorConstants");
 const validateRequest = require("../middlewares/validateRequest");
-const loginSchema = require("../validators/loginValidator");
+const { loginSchema } = require("../validators/authValidator");
 const userController = require("../db/controllers/userController");
 
 router.post("/login", validateRequest(loginSchema), async (req, res, next) => {  
