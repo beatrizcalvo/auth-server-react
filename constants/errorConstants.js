@@ -61,7 +61,16 @@ const AUTH_API_T_0001 = function (descriptionError) {
   };
 };
 
+const AUTH_API_T_0002 = function (descriptionError) {
+  return {
+    code: "AUTH_API-T-0002",
+    level: "error",
+    message: "Error creating user",
+    description: descriptionError
+  };
+};
+
 module.exports = { 
   AUTH_API_F_0001, AUTH_API_F_0002, AUTH_API_F_0003, AUTH_API_F_0004, AUTH_API_F_0005, AUTH_API_F_0006, 
-  AUTH_API_T_0001
+  AUTH_API_T_0001, AUTH_API_T_0002
 };
