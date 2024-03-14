@@ -3,7 +3,7 @@ const Joi = require('joi');
 
 const errorMessages = require("../constants/errorConstants");
 
-const validateRequest = (schema) => async function (req, res, next) { 
+const validateRequest = (schema) => function (req, res, next) { 
   try {
     const result = schema.validate(req.body, { abortEarly: false});
     if (result.error) next(createHttpError(400, createValidationErrors(result.error)));
