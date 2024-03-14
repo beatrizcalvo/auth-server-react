@@ -1,4 +1,6 @@
+require("dotenv").config();
 const createHttpError = require('http-errors');
+const jwt = require("jsonwebtoken");
 
 const errorMessages = require("../constants/errorConstants");
 
@@ -8,9 +10,17 @@ const autenticateHandler = (req, res, next) => {
   if (!authToken || !authToken.toLowerCase().startsWith("bearer ")) 
     return next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0007()])));
 
-  
-  console.log("Enter autenticateToken middleware");
-  next();
+  // Slit the token to remove the "Bearer " part
+  const token = authToken.split(" ")[1];
+
+  // Verify the token and check if the user exists. Any error will return code 401
+  jwt.verify(token, process.env.JWT_SECRET_KEY)
+    .then(decodedToken => {
+      // Check if a user with this id exists in the database
+    })
+    .catch(() => {
+      next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0007()])));
+    });
 };
 
 module.exports = autenticateHandler;
