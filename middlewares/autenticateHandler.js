@@ -8,6 +8,7 @@ const userController = require("../db/controllers/userController");
 const autenticateHandler = (req, res, next) => {
   // Get the token from the Authorization header and validate
   const authToken = req.headers.authorization;
+  console.log("llega");
   if (!authToken || !authToken.toLowerCase().startsWith("bearer ")) 
     return next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0007()])));
 
