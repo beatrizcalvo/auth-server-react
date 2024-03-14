@@ -1,8 +1,14 @@
+const createHttpError = require('http-errors')
 const Joi = require('joi');
 
-const validateRequest = (schema) => async function (req, res, next) {
-  console.log('Executing validateRequest middleware');
-  next();
+const validateRequest = (schema) => async function (req, res, next) { 
+  try {
+    
+    next();
+    
+  } catch (error) {
+    next(error);
+  }
 };
 
 module.exports = validateRequest;
