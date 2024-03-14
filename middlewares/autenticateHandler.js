@@ -25,7 +25,7 @@ const autenticateHandler = (req, res, next) => {
         next();
       })
       .catch(() => {
-        next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0007()]))));
+        next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0007()])));
       });
   } catch (error) {
     next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0007()])));
