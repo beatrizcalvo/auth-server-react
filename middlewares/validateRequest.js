@@ -8,7 +8,7 @@ const validateRequest = (schema) => async function (req, res, next) {
     next();
     
   } catch (error) {
-    if(err.isJoi) next(createHttpError(400, error));
+    if (err.isJoi) next(createHttpError(400, error));
     next(createHttpError(500, error));
   }
 };
