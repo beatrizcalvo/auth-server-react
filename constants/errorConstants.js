@@ -43,6 +43,15 @@ const AUTH_API_F_0005 = function () {
   };
 };
 
+const AUTH_API_F_0006 = function () {
+  return {
+    code: "AUTH_API-F-0006",
+    level: "error",
+    message: "Unauthorized",
+    description: "Passwords does not match"
+  };
+};
+
 const AUTH_API_T_0001 = function (descriptionError) {
   return {
     code: "AUTH_API-T-0001",
@@ -53,6 +62,6 @@ const AUTH_API_T_0001 = function (descriptionError) {
 };
 
 module.exports = { 
-  AUTH_API_F_0001, AUTH_API_F_0002, AUTH_API_F_0003, AUTH_API_F_0004, AUTH_API_F_0005,
+  AUTH_API_F_0001, AUTH_API_F_0002, AUTH_API_F_0003, AUTH_API_F_0004, AUTH_API_F_0005, AUTH_API_F_0006, 
   AUTH_API_T_0001
 };
