@@ -3,13 +3,13 @@ const Joi = require('joi');
 
 const validateRequest = (schema) => async function (req, res, next) { 
   try {
-    const validated = schema.validate(req.body, { abortEarly: false});
-    console.log("validated");
-    req.body = validated
+    const result = schema.validate(req.body, { abortEarly: false});
+    if (result.error) {
+      throw Error(result.error);
+    }
     next();
     
   } catch (error) {
-    console.log(error);
     if (error.isJoi) next(createHttpError(400, error));
     next(createHttpError(500, error));
   }
