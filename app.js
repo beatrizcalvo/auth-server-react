@@ -30,6 +30,6 @@ const userRoutes = require("./routes/userRoutes");
 
 // Bind App Routes
 app.use("/auth", authRoutes, errorHandler);
-app.use("/users", autenticateHandler, authRoutes, errorHandler);
+app.use("/users", autenticateHandler, userRoutes, errorHandler);
 
 module.exports = app;
