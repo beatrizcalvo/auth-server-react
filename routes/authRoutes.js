@@ -49,7 +49,36 @@ router.post("/login", validateRequest(loginSchema), (req, res, next) => {
 });
 
 router.post("/register", validateRequest(registerSchema), (req, res, next) => {
-  
+  const firstName = req.body.firstName;
+  const lastName = req.body.lastName;
+  const email = req.body.email.toLowerCase();
+  const password = req.body.password;
+
+  // Hash the password
+  bcrypt
+    .hash(password, 10)
+    .then(hashedPassword => {
+      const capitalizedFirstName = firstName.charAt(0).toUpperCase() + firstName.slice(1);
+      const capitalizedLastName = lastName.charAt(0).toUpperCase() + lastName.slice(1);
+
+      // Save the new user
+      userController.createUser(capitalizedFirstName, capitalizedLastName, email, hashedPassword)
+        .then(result => {
+          const responseBody = {
+            id: result._id,
+            email: result.email,
+            createdAt: result.createdAt,
+          };
+          console.error('POST /auth/register ## Request Body: {"firstName": "' + firstName + '", "lastName": "' + lastName + '", "email": "' + email + '" ...} || Response Status: 201 ## Response Body: ' + JSON.stringify(responseBody));
+          res.status(201).send(responseBody);
+        })
+        .catch(error => {
+          next(createHttpError(500, JSON.stringify([errorMessages.AUTH_API_T_0002(error.message.replaceAll('"', "'"))])));
+        });
+    })
+    .catch(error => {
+      next(createHttpError(500, error));
+    });
 });
 
 module.exports = router;
