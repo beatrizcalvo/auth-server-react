@@ -21,6 +21,7 @@ router.post("/login", validateRequest(loginSchema), async (req, res, next) => {
         // Compare the password entered and the hashed password found
         const isMatch = bcrypt.compare(password, user.password);
         if (!isMatch) next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0006()])));
+        console.log(isMatch);
 
         // Create JWT token
         const token = jwt.sign(
@@ -49,6 +50,9 @@ router.post("/login", validateRequest(loginSchema), async (req, res, next) => {
 
 router.post("/register", validateRequest(registerSchema), async (req, res, next) => {
   try {
+    // Hash the password
+    const hashedPassword = bcrypt.hash(password, 10);
+    
     res.status(200).send({});
   } catch (error) {
     next(error);
