@@ -22,6 +22,7 @@ const createValidationErrors = function (error) {
         listErrors.push(errorMessages.AUTH_API_F_0001(field));
         break;
       case "string.base":
+      case "string.email":
         listErrors.push(errorMessages.AUTH_API_F_0002(field));
         break;
       case "string.min":
@@ -34,6 +35,7 @@ const createValidationErrors = function (error) {
         break;
     }
   });
+  console.log(listErrors);
   return listErrors;
 };
 
