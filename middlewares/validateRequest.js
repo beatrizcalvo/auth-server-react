@@ -1,4 +1,4 @@
-const createHttpError = require('http-errors')
+const createHttpError = require('http-errors');
 const Joi = require('joi');
 
 const errorMessages = require("../constants/errorConstants");
