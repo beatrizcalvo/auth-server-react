@@ -1,6 +1,6 @@
 const errorMessages = require("../constants/errorConstants");
 
-const errorHandler = async (err, req, res, next) => {
+const errorHandler = (err, req, res, next) => {
   const statusCode = err.status || 500;
   const responseBody = (statusCode === 500 
                         ? { errors: [errorMessages.AUTH_API_T_0001(err.message.replaceAll('"', "'"))] } 
