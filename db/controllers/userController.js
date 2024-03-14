@@ -35,4 +35,12 @@ const findById = function (id) {
   return User.findUnique({ _id: id });
 };
 
-module.exports = { createUser, findByEmail, findById };
+const findByIdWithProfile = function (id) {
+  return User.findUnique({ _id: id}).populate("profile");
+};
+
+module.exports = { 
+  createUser, 
+  findByEmail, 
+  findById, findByIdWithProfile 
+};
