@@ -8,13 +8,13 @@ const userController = require("../db/controllers/userController");
 const autenticateHandler = (req, res, next) => {
   // Get the token from the Authorization header and validate
   const authToken = req.headers.authorization;
-  console.log("llega: " + authToken);
+  
   if (!authToken || !authToken.toLowerCase().startsWith("bearer ")) 
     return next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0007()])));
 
   // Slit the token to remove the "Bearer " part
   const token = authToken.split(" ")[1];
-
+console.log("llega: " + process.env.JWT_SECRET_KEY);
   try {
     // Verify the token and check if the user exists. Any error will return code 401
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
