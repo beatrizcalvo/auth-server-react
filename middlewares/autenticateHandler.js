@@ -14,20 +14,22 @@ const autenticateHandler = (req, res, next) => {
   // Slit the token to remove the "Bearer " part
   const token = authToken.split(" ")[1];
 
-  // Verify the token and check if the user exists. Any error will return code 401
-  jwt.verify(token, process.env.JWT_SECRET_KEY)
-    .then(decodedToken => {
-      // Check if a user with this id exists in the database
-      userController.findById(decodedToken.sub)
-        .then(() => {
-          req.currentUserId = decodedToken.sub;
-          next();
-        })
-        .catch(() => next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0007()]))));
-    })
-    .catch(() => {
-      next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0007()])));
-    });
+  try {
+    // Verify the token and check if the user exists. Any error will return code 401
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
+
+    // Check if a user with this id exists in the database
+    userController.findById(decodedToken.sub)
+      .then(() => {
+        req.currentUserId = decodedToken.sub;
+        next();
+      })
+      .catch(() => {
+        next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0007()]))));
+      });
+  } catch (error) {
+    next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0007()])));
+  }
 };
 
 module.exports = autenticateHandler;
