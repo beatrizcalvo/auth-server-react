@@ -21,6 +21,9 @@ const createValidationErrors = function (error) {
       case "any.required":
         listErrors.push(errorMessages.AUTH_API_F_0001(field));
         break;
+      case ["string.base", "string.email"]:
+        listErrors.push(errorMessages.AUTH_API_F_0002(field));
+        break;
       default: 
         listErrors.push(err);
         break;
