@@ -20,8 +20,23 @@ router.post("/login", validateRequest(loginSchema), async (req, res, next) => {
       .then(user => {
         // Compare the password entered and the hashed password found
         const isMatch = bcrypt.compare(password, user.password);
-        if (!isMatch) {}
-        res.status(200).send({});
+        if (!isMatch) next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0006()])));
+
+        // Create JWT token
+        const token = jwt.sign(
+          { iss: "react-test-app", sub: user._id },
+          process.env.JWT_SECRET_KEY,
+          { expiresIn: '1h' }
+        );
+
+        // Return success response
+        const responseBody = {
+          access_token: token,
+          token_type: "Bearer",
+          expires_in: "3600"
+        };
+        console.error('POST /auth/login ## Request Body: {"email": "' + email + '" ...} || Response Status: 200 ## Response Body: ' + JSON.stringify(responseBody));
+        res.status(200).send(responseBody);
       })
       .catch(() => {
         next(createHttpError(400, JSON.stringify([errorMessages.AUTH_API_F_0005()])));
