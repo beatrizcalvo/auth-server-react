@@ -3,7 +3,7 @@ const router = express.Router();
 
 const errorMessages = require("../constants/errorConstants");
 const validateRequest = require("../middlewares/validateRequest");
-const { loginSchema } = require("../validators/authValidator");
+const { loginSchema, registerSchema } = require("../validators/authValidator");
 const userController = require("../db/controllers/userController");
 
 router.post("/login", validateRequest(loginSchema), async (req, res, next) => {  
@@ -19,6 +19,14 @@ router.post("/login", validateRequest(loginSchema), async (req, res, next) => {
         
       });
     
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.post("/register", validateRequest(registerSchema), async (req, res, next) => {
+  try {
+    res.status(200).send({});
   } catch (error) {
     next(error);
   }
