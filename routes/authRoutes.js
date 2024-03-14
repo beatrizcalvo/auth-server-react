@@ -10,7 +10,7 @@ const validateRequest = require("../middlewares/validateRequest");
 const { loginSchema, registerSchema } = require("../validators/authValidator");
 const userController = require("../db/controllers/userController");
 
-router.post("/login", validateRequest(loginSchema), async function(req, res, next) => {  
+router.post("/login", validateRequest(loginSchema), async function(req, res, next) {  
   try {
     const email = req.body.email.toLowerCase();
     const password = req.body.password;
