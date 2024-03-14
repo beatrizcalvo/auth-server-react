@@ -22,10 +22,11 @@ const server = app.listen(port, () =>
 server.keepAliveTimeout = 120 * 1000;
 server.headersTimeout = 120 * 1000;
 
-// Routes dependencies
+// Routes and middlewares dependencies
+const errorHandler = require("./middlewares/errorHandler");
 const authRoutes = require("./routes/authRoutes");
 
 // Bind App Routes
-app.use("/auth", authRoutes);
+app.use("/auth", authRoutes, errorHandler);
 
 module.exports = app;
