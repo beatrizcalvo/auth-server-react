@@ -31,11 +31,10 @@ const createValidationErrors = function (error) {
         listErrors.push(errorMessages.AUTH_API_F_0004(field));
         break;
       default: 
-        listErrors.push(err);
         break;
     }
   });
-  return error;
+  return listErrors;
 };
 
 module.exports = validateRequest;
