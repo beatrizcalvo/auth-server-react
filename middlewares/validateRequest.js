@@ -22,11 +22,13 @@ const createValidationErrors = function (error) {
         listErrors.push(errorMessages.AUTH_API_F_0001(field));
         break;
       case "string.base":
-      case "string.email":
         listErrors.push(errorMessages.AUTH_API_F_0002(field));
         break;
       case "string.min":
         listErrors.push(errorMessages.AUTH_API_F_0003(field, err.context.limit));
+        break;
+      case "object.unknown":
+        listErrors.push(errorMessages.AUTH_API_F_0004(field));
         break;
       default: 
         listErrors.push(err);
