@@ -28,7 +28,7 @@ router.post("/login", validateRequest(loginSchema), async (req, res, next) => {
       });
     
   } catch (error) {
-    next(error);
+    next(createHttpError(500, error));
   }
 });
 
