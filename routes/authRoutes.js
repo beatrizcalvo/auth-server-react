@@ -47,7 +47,7 @@ router.post("/login", validateRequest(loginSchema), async function(req, res, nex
   }
 });
 
-router.post("/register", validateRequest(registerSchema), async (req, res, next) => {
+router.post("/register", validateRequest(registerSchema), (req, res, next) => {
   try {
     const firstName = req.body.firstName;
     const capitalizedFirstName = firstName.charAt(0).toUpperCase() + firstName.slice(1);
