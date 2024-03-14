@@ -14,16 +14,14 @@ const validateRequest = (schema) => async function (req, res, next) {
 };
 
 const createValidationErrors = function (error) {
-  error.details.map(err => {
-    console.log(err.type);
-    console.log(err.path);
-    console.log(err.message);
+  return error.details.map(err => {
     switch (err.type) {
+      "any.required":
+        return errorMessages.AUTH_API_F_0001(err.path.join("."));
       default: 
-        return err.message;
+        return err;
     }
   });
-  return error;
 };
 
 module.exports = validateRequest;
