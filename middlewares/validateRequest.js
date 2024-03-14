@@ -35,7 +35,7 @@ const createValidationErrors = function (error) {
         break;
     }
   });
-  return listErrors;
+  return JSON.stringify(listErrors);
 };
 
 module.exports = validateRequest;
