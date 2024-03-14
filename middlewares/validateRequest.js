@@ -1,6 +1,8 @@
 const createHttpError = require('http-errors')
 const Joi = require('joi');
 
+const errorMessages = require("../constants/errorConstants");
+
 const validateRequest = (schema) => async function (req, res, next) { 
   try {
     const result = schema.validate(req.body, { abortEarly: false});
@@ -16,6 +18,10 @@ const createValidationErrors = function (error) {
     console.log(err.type);
     console.log(err.path);
     console.log(err.message);
+    switch (err.type) {
+      default: 
+        return err.message;
+    }
   });
   return error;
 };
