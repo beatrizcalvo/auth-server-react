@@ -5,13 +5,13 @@ const router = express.Router();
 const userController = require("../db/controllers/userController");
 
 router.get("/me", (req, res, next) => {
-  userController.findByIdWithProfile(req.currentUserId)
+  userController.findByIdWithProfile("234")
     .then((user) => {
       console.log(user);
       res.status(200).send({});
     })
     .catch(() => {
-      next();
+      next(createHttpError(404, JSON.stringify([errorMessages.AUTH_API_F_0008()])));
     });
 });
 
