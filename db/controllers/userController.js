@@ -32,15 +32,11 @@ const findByEmail = function (email) {
 };
 
 const findById = function (id) {
-  return User.findUnique({ _id: id });
-};
-
-const findByIdWithProfile = function (id) {
-  return User.findUnique({ _id: id}).populate("profile");
+  return User.findOne({ _id: id });
 };
 
 module.exports = { 
   createUser, 
   findByEmail, 
-  findById, findByIdWithProfile 
+  findById
 };
