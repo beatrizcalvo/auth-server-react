@@ -5,9 +5,9 @@ const errorHandler = (err, req, res, next) => {
   const responseBody = (statusCode === 500 
                         ? { errors: [errorMessages.AUTH_API_T_0001(err.message.replaceAll('"', "'"))] } 
                         : { errors: JSON.parse(err.message) });
-  console.log(req.body);
+  
   console.error(req.method + " " + req.originalUrl + 
-                (req.body ? " ## Request Body: " + JSON.stringify(req.body) : "") + 
+                ((Object.keys(req.body).length !== 0) ? (" ## Request Body: " + JSON.stringify(req.body)) : "") + 
                 " || Response Status: " + statusCode + " ## Response Body: " + JSON.stringify(responseBody));
   
   res.status(statusCode).send(responseBody);
