@@ -35,8 +35,12 @@ const findById = function (id) {
   return User.findOne({ _id: id });
 };
 
+const findByIdWithProfile = function (id) {
+  return User.findOne({ _id: id }).populate("profile");
+};
+
 module.exports = { 
   createUser, 
   findByEmail, 
-  findById
+  findById, findByIdWithProfile
 };
