@@ -20,17 +20,10 @@ const autenticateHandler = (req, res, next) => {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
 
     // Check if a user with this id exists in the database
-    userController.findById(decodedToken.sub)
-      .then(() => {
-        console.log("OK");
-        req.currentUserId = decodedToken.sub;
-        next();
-      }).catch((error) => {
-        console.log("catch error2: " + error);
-        next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0007()])));
-      });    
+    const user = userController.findById(decodedToken.sub);
+  console.log(user);
+    next();
   } catch (error) {
-    console.log("catch error1: " + error);
     next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0007()])));
   }
 };
