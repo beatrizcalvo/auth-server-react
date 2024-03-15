@@ -49,9 +49,9 @@ router.post("/login", validateRequest(loginSchema), (req, res, next) => {
 });
 
 router.post("/register", validateRequest(registerSchema), (req, res, next) => {
-  const firstName = req.body.firstName;
-  const lastName = req.body.lastName;
-  const email = req.body.email.toLowerCase();
+  const firstName = req.body.trim().firstName;
+  const lastName = req.body.trim().lastName;
+  const email = req.body.email.trim().toLowerCase();
   const password = req.body.password;
 
   // Hash the password
