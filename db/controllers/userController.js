@@ -36,7 +36,7 @@ const findById = function (id) {
 };
 
 const findByIdWithProfile = function (id) {
-  return User.findOne({ _id: id });
+  return User.findOne({ _id: id }).populate("profile").exec();
 };
 
 module.exports = { 
