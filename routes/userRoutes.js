@@ -8,12 +8,12 @@ const userController = require("../db/controllers/userController");
 router.get("/me", (req, res, next) => {
   console.log(req.currentUserId);
   userController.findByIdWithProfile(req.currentUserId)
-    .then((user) => {
-      console.log(user);
+    .then((result) => {
+      console.log(result);
       const responseBody = {
-        id: user._id,
-        firstName: user.firstName,
-        lastName: user.lastName,
+        id: result._id,
+        firstName: result.firstName,
+        lastName: result.lastName,
         profile: {}
       };
       console.log(responseBody);
