@@ -1,6 +1,6 @@
 require("dotenv").config();
 const createHttpError = require('http-errors');
-const jwt = require("jsonwebtoken");
+var jwt = require('jsonwebtoken');
 
 const errorMessages = require("../constants/errorConstants");
 const userController = require("../db/controllers/userController");
