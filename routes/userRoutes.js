@@ -9,13 +9,12 @@ router.get("/me", (req, res, next) => {
   console.log(req.currentUserId);
   userController.findByIdWithProfile(req.currentUserId)
     .then((user) => {
+      console.log(user);
       const responseBody = {
         id: user._id,
         firstName: user.firstName,
         lastName: user.lastName,
-        profile: {
-          id: user.profile._id
-        }
+        profile: {}
       };
       console.log(responseBody);
       res.status(200).send({});
