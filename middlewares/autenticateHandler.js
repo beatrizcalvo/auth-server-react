@@ -20,14 +20,16 @@ const autenticateHandler = (req, res, next) => {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
 
     // Check if a user with this id exists in the database
-    const userFind = userController.findById(decodedToken.sub);
-    if (!userFind) next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0007()])));
-
-    // Save current user id in request
-    req.currentUserId = decodedToken.sub;
-    next();
+    userController.findById(decodedToken.sub)
+      .then(() => {
+        // Save current user id in request
+        req.currentUserId = decodedToken.sub;
+        next();
+      })
+      .catch(() => {
+        next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0007()])));
+      });    
   } catch (error) {
-    console.log(error);
     next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0007()])));
   }
 };
