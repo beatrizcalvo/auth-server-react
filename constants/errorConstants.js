@@ -61,6 +61,15 @@ const AUTH_API_F_0007 = function () {
   };
 };
 
+const AUTH_API_F_0008 = function () {
+  return {
+    code: "AUTH_API-F-0008",
+    level: "error",
+    message: "Not found",
+    description: "No user found for that id"
+  };
+};
+
 const AUTH_API_T_0001 = function (descriptionError) {
   return {
     code: "AUTH_API-T-0001",
@@ -81,6 +90,6 @@ const AUTH_API_T_0002 = function (descriptionError) {
 
 module.exports = { 
   AUTH_API_F_0001, AUTH_API_F_0002, AUTH_API_F_0003, AUTH_API_F_0004, AUTH_API_F_0005, AUTH_API_F_0006, 
-  AUTH_API_F_0007,
+  AUTH_API_F_0007, AUTH_API_F_0008, 
   AUTH_API_T_0001, AUTH_API_T_0002
 };
