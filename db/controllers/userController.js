@@ -1,13 +1,14 @@
 const mongoose = require("mongoose");
 const User = require("../models/userModel");
 const Profile = require("../models/profileModel");
+const Role = require("../models/roleModel");
 
 const createUser = async function (firstName, lastName, email, password) {
   let session = await mongoose.startSession();
   session.startTransaction();
   try {
     // Save profile data
-    const profile = Profile({ firstName: firstName, lastName: lastName });
+    const profile = Profile({ firstName: firstName, lastName: lastName, role: Role.findOne({ name: "user" }) });
     await profile.save({ session });
 
     // Save user data
