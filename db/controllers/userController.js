@@ -43,5 +43,5 @@ const findByIdComplete = function (id) {
 module.exports = { 
   createUser, 
   findByEmail, 
-  findById, findByIdWithProfile
+  findById, findByIdComplete
 };
