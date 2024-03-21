@@ -31,11 +31,11 @@ const createUser = async function (firstName, lastName, email, password) {
 };
 
 const findByEmail = function (email) {
-  return User.findOne({ email: email }).exec();
+  return User.findOne({ email: email }).lean().exec();
 };
 
 const findById = function (id) {
-  return User.findById(id, NON_SELECTED_FIELDS).exec();
+  return User.findById(id, NON_SELECTED_FIELDS).lean().exec();
 };
 
 const findByIdPopulated = function (id) {
@@ -46,7 +46,7 @@ const findByIdPopulated = function (id) {
       path: "role",
       select: ["description"]
     }
-  }).exec();
+  }).lean().exec();
 };
 
 module.exports = { 
