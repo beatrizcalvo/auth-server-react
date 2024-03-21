@@ -3,6 +3,8 @@ const User = require("../models/userModel");
 const Profile = require("../models/profileModel");
 const Role = require("../models/roleModel");
 
+const NON_SELECTED_FIELDS = "-__v";
+
 const createUser = async function (firstName, lastName, email, password) {
   let session = await mongoose.startSession();
   session.startTransaction();
@@ -29,15 +31,15 @@ const createUser = async function (firstName, lastName, email, password) {
 };
 
 const findByEmail = function (email) {
-  return User.findOne({ email: email });
+  return User.findOne({ email: email }).exec();
 };
 
 const findById = function (id) {
-  return User.findById(id);
+  return User.findById(id, NON_SELECTED_FIELDS).exec();
 };
 
-const findByIdComplete = function (id) {
-  return User.findOne({ _id: id }).populate({
+const findByIdPopulated = function (id) {
+  return User.findById(id, NON_SELECTED_FIELDS).populate({
     path: "profile"
   }).exec();
 };
