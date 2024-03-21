@@ -6,13 +6,14 @@ const errorMessages = require("../constants/errorConstants");
 const userController = require("../db/controllers/userController");
 
 router.get("/me", (req, res, next) => {
-  userController.findByIdWithProfile(req.currentUserId)
+  userController.findByIdComplete(req.currentUserId)
     .then((result) => {
       const responseBody = {
         id: result._id,
         firstName: result.profile.firstName,
         lastName: result.profile.lastName,
         fullName: result.profile.firstName + " " + result.profile.lastName,
+        typeDescription: result.role.description,
         contactPoint: {
           electronicAddress: {
             emailAddress: result.email
