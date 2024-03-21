@@ -36,8 +36,8 @@ const findById = function (id) {
   return User.findOne({ _id: id });
 };
 
-const findByIdWithProfile = function (id) {
-  return User.findOne({ _id: id }).populate("profile").exec();
+const findByIdComplete = function (id) {
+  return User.findOne({ _id: id }).populate("profile").populate("role").exec();
 };
 
 module.exports = { 
