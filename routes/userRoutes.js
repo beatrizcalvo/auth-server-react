@@ -8,6 +8,7 @@ const userController = require("../db/controllers/userController");
 router.get("/me", (req, res, next) => {
   userController.findByIdPopulated(req.currentUserId)
     .then((result) => {
+      console.log(result);
       const responseBody = {
         id: result._id,
         firstName: result.profile.firstName,
