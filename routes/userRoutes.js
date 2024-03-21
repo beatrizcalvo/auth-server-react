@@ -21,7 +21,7 @@ router.get("/me", (req, res, next) => {
         },
         audit: {
           creationDate: result.createdAt,
-          updateDate: (result.updatedAt >= result.profile.updatedAt) ? result.updatedAt : result.profile.updatedAt
+          modificationDate: (result.updatedAt >= result.profile.updatedAt) ? result.updatedAt : result.profile.updatedAt
         }
       };
       console.log("GET /users/me || Response Status: 200 ## Response Body: " + JSON.stringify(responseBody));
