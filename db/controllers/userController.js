@@ -38,11 +38,7 @@ const findById = function (id) {
 
 const findByIdComplete = function (id) {
   return User.findOne({ _id: id }).populate({
-    path: "profile",
-    populate: {
-      path: "role",
-      select: "description"
-    }
+    path: "profile"
   }).exec();
 };
 
