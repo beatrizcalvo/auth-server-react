@@ -33,7 +33,7 @@ const findByEmail = function (email) {
 };
 
 const findById = function (id) {
-  return User.findById(id, "_id");
+  return User.findById(id);
 };
 
 const findByIdComplete = function (id) {
