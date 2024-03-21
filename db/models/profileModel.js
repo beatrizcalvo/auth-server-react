@@ -10,6 +10,11 @@ const ProfileSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please provide a last name!"],
     },
+    role: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Roles",
+      required: [true, "Please provide a role!"],
+    }
   },
   { timestamps: true },
 );
