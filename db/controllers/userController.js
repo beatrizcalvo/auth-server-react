@@ -44,7 +44,7 @@ const findByIdPopulated = function (id) {
     select: NON_SELECTED_FIELDS,
     populate: {
       path: "role",
-      select: NON_SELECTED_FIELDS
+      select: ["description"]
     }
   }).exec();
 };
