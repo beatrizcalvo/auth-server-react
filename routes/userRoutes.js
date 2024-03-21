@@ -8,12 +8,12 @@ const userController = require("../db/controllers/userController");
 router.get("/me", (req, res, next) => {
   userController.findByIdComplete(req.currentUserId)
     .then((result) => {
+      console.log(result);
       const responseBody = {
         id: result._id,
         firstName: result.profile.firstName,
         lastName: result.profile.lastName,
         fullName: result.profile.firstName + " " + result.profile.lastName,
-        typeDescription: result.role.description,
         contactPoint: {
           electronicAddress: {
             emailAddress: result.email
