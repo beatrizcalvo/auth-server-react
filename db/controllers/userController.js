@@ -40,7 +40,13 @@ const findById = function (id) {
 
 const findByIdPopulated = function (id) {
   return User.findById(id, NON_SELECTED_FIELDS).populate({
-    path: "profile"
+    path: "profile",
+    select: NON_SELECTED_FIELDS,
+    populate: {
+      path: "role",
+      model: "Roles",
+      select: "description"
+    }
   }).exec();
 };
 
