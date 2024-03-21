@@ -6,7 +6,7 @@ const errorMessages = require("../constants/errorConstants");
 const userController = require("../db/controllers/userController");
 
 router.get("/me", (req, res, next) => {
-  userController.findByIdComplete(req.currentUserId)
+  userController.findByIdPopulated(req.currentUserId)
     .then((result) => {
       console.log(result);
       const responseBody = {
