@@ -5,7 +5,7 @@ const updateToken = function (userId, token) {
   return UserToken.findOneAndUpdate(
     { userId: userId }, 
     { token: token }, 
-    upsert: true
+    { upsert: true }
   );
 };
 
