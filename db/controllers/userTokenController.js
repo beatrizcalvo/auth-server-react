@@ -9,6 +9,11 @@ const updateToken = function (userId, token) {
   );
 };
 
+const findByToken = function (token) {
+  return UserToken.findOne({ token: token }).lean().exec();
+};
+
 module.exports = { 
-  updateToken
+  updateToken,
+  findByToken
 };
