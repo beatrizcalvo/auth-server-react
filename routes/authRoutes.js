@@ -25,7 +25,7 @@ router.post("/login", validateRequest(loginSchema), (req, res, next) => {
 
           // Create JWT tokens
           const payload = { iss: "react-test-app", sub: user._id };
-          const accessToken = jwt.sign(payload, process.env.JWT_SECRET_KEY, { expiresIn: '1h' } );
+          const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET_KEY, { expiresIn: '1h' } );
 
           // Return success response
           const responseBody = {
