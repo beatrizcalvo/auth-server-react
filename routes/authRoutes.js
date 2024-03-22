@@ -25,8 +25,8 @@ router.post("/login", validateRequest(loginSchema), (req, res, next) => {
           if (!isMatch) return next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0006()])));
 
           // Create JWT tokens
+          const accessToken = generateToken(user._id, process.env.ACCESS_TOKEN_SECRET_KEY, "1h");
           const payload = { iss: "react-test-app", sub: user._id };
-          const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET_KEY, { expiresIn: '1h' } );
           const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET_KEY, { expiresIn: '12h'} );
 
           // Save refresh token in the database
@@ -99,10 +99,22 @@ router.post("/refresh", validateRequest(refreshSchema), (req, res, next) => {
     const decodedToken = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET_KEY);
 
     // Check if the token exists in the database
-    
+    userTokenController.findByToken(token)
+      .then(() => {
+        // Create new access token
+        
+      })
+      .catch(() => {
+        next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0007()])));
+      });
   } catch (error) {
     next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0007()])));
   }
 });
+
+const generateToken = (sub, secretKey, expiresIn) => {
+  const payload = { iss: "react-test-app", sub: sub };
+  return jwt.sign(payload, secretKey, { expiresIn: expiresIn } );
+};
 
 module.exports = router;
