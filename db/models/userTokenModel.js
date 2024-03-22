@@ -1,7 +1,12 @@
 const mongoose = require("mongoose");
 
 const UserTokenSchema = new mongoose.Schema(
-  {},
+  {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: [true, "Please provide a user id!"]
+    }
+  },
   { timestamps: true }
 );
 
