@@ -9,6 +9,7 @@ const errorMessages = require("../constants/errorConstants");
 const validateRequest = require("../middlewares/validateRequest");
 const { loginSchema, registerSchema } = require("../validators/authValidator");
 const userController = require("../db/controllers/userController");
+const userTokenController = require("../db/controllers/userTokenController");
 
 router.post("/login", validateRequest(loginSchema), (req, res, next) => {
   const email = req.body.email.toLowerCase();
@@ -29,17 +30,23 @@ router.post("/login", validateRequest(loginSchema), (req, res, next) => {
           const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET_KEY, { expiresIn: '12h'} );
 
           // Save refresh token in db
-          
-
-          // Return success response
-          const responseBody = {
-            access_token: accessToken,
-            refresh_token: refreshToken,
-            token_type: "Bearer",
-            expires_in: "3600"
-          };
-          console.error('POST /auth/login ## Request Body: {"email": "' + email + '" ...} || Response Status: 200 ## Response Body: ' + JSON.stringify(responseBody));
-          res.status(200).send(responseBody);
+          userTokenController.updateToken(user._id, refreshToken)
+            .then(() => {
+              // Return success response
+              const responseBody = {
+                access_token: accessToken,
+                refresh_token: refreshToken,
+                token_type: "Bearer",
+                expires_in: "3600"
+              };
+              console.error('POST /auth/login ## Request Body: {"email": "' + email + 
+                            '" ...} || Response Status: 200 ## Response Body: ' + 
+                            JSON.stringify(responseBody));
+              res.status(200).send(responseBody);
+            })
+            .catch(() => {
+              next(createHttpError(500, error));
+            });
         })
         .catch(error => {
           next(createHttpError(500, error));
@@ -71,7 +78,8 @@ router.post("/register", validateRequest(registerSchema), (req, res, next) => {
             email: result.email,
             createdAt: result.createdAt,
           };
-          console.error('POST /auth/register ## Request Body: {"firstName": "' + firstName + '", "lastName": "' + lastName + '", "email": "' + email + '" ...} || Response Status: 201 ## Response Body: ' + JSON.stringify(responseBody));
+          console.error('POST /auth/register ## Request Body: {"firstName": "' + firstName + '", "lastName": "' + lastName + 
+                        '", "email": "' + email + '" ...} || Response Status: 201 ## Response Body: ' + JSON.stringify(responseBody));
           res.status(201).send(responseBody);
         })
         .catch(error => {
