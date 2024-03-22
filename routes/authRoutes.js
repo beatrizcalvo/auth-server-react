@@ -28,6 +28,9 @@ router.post("/login", validateRequest(loginSchema), (req, res, next) => {
           const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET_KEY, { expiresIn: '1h' } );
           const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET_KEY, { expiresIn: '12h'} );
 
+          // Save refresh token in db
+          
+
           // Return success response
           const responseBody = {
             access_token: accessToken,
