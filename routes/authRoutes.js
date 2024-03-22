@@ -23,16 +23,14 @@ router.post("/login", validateRequest(loginSchema), (req, res, next) => {
           // Check if password matches
           if (!isMatch) return next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0006()])));
 
-          // Create JWT token
-          const token = jwt.sign(
-            { iss: "react-test-app", sub: user._id },
-            process.env.JWT_SECRET_KEY,
-            { expiresIn: '1h' }
-          );
+          // Create JWT tokens
+          const payload = { iss: "react-test-app", sub: user._id };
+          const accessToken = jwt.sign(payload, process.env.JWT_SECRET_KEY, { expiresIn: '1h' } );
+          const refreshToken = jwt.sign(payload, process.env.JWT_SECRET_KEY
 
           // Return success response
           const responseBody = {
-            access_token: token,
+            access_token: accessToken,
             token_type: "Bearer",
             expires_in: "3600"
           };
