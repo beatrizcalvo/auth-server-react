@@ -17,7 +17,7 @@ const autenticateHandler = (req, res, next) => {
 
   try {
     // Verify the token and check if the user exists. Any error will return code 401
-    const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY);
 
     // Check if a user with this id exists in the database
     userController.findById(decodedToken.sub)
