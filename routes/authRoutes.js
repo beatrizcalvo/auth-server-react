@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 
 const errorMessages = require("../constants/errorConstants");
 const validateRequest = require("../middlewares/validateRequest");
-const { loginSchema, registerSchema } = require("../validators/authValidator");
+const { loginSchema, registerSchema, refreshSchema } = require("../validators/authValidator");
 const userController = require("../db/controllers/userController");
 const userTokenController = require("../db/controllers/userTokenController");
 
@@ -89,6 +89,10 @@ router.post("/register", validateRequest(registerSchema), (req, res, next) => {
     .catch(error => {
       next(createHttpError(500, error));
     });
+});
+
+router.post("/refresh", validateRequest(refreshSchema), (req, res, next) => {
+  
 });
 
 module.exports = router;
