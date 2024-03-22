@@ -29,7 +29,7 @@ router.post("/login", validateRequest(loginSchema), (req, res, next) => {
           const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET_KEY, { expiresIn: '1h' } );
           const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET_KEY, { expiresIn: '12h'} );
 
-          // Save refresh token in db
+          // Save refresh token in the database
           userTokenController.updateToken(user._id, refreshToken)
             .then(() => {
               // Return success response
@@ -92,7 +92,17 @@ router.post("/register", validateRequest(registerSchema), (req, res, next) => {
 });
 
 router.post("/refresh", validateRequest(refreshSchema), (req, res, next) => {
-  
+  const token = req.body.refresh_token.trim();
+
+  try {
+    // Verify the token and check if the token exists. Any error will return code 401
+    const decodedToken = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET_KEY);
+
+    // Check if the token exists in the database
+    
+  } catch (error) {
+    next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0007()])));
+  }
 });
 
 module.exports = router;
