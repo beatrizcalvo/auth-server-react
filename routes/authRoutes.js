@@ -26,8 +26,7 @@ router.post("/login", validateRequest(loginSchema), (req, res, next) => {
 
           // Create JWT tokens
           const accessToken = generateToken(user._id, process.env.ACCESS_TOKEN_SECRET_KEY, "1h");
-          const payload = { iss: "react-test-app", sub: user._id };
-          const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET_KEY, { expiresIn: '12h'} );
+          const refreshToken = generateToken(user._id, process.env.REFRESH_TOKEN_SECRET_KEY, "12h");
 
           // Save refresh token in the database
           userTokenController.updateToken(user._id, refreshToken)
