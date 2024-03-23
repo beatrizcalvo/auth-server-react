@@ -35,12 +35,7 @@ router.post("/login", validateRequest(loginSchema), (req, res, next) => {
           userTokenController.updateToken(user._id, refreshToken)
             .then(() => {
               // Return success response
-              const responseBody = {
-                access_token: accessToken,
-                refresh_token: refreshToken,
-                token_type: "Bearer",
-                expires_in: "3600"
-              };
+              const responseBody = createResponseTokens(accessToken, refreshToken);
               console.error('POST /auth/login ## Request Body: {"email": "' + email + 
                             '" ...} || Response Status: 200 ## Response Body: ' + 
                             JSON.stringify(responseBody));
@@ -119,8 +114,13 @@ const createToken = (sub, secretKey, expiresIn) => {
   return jwt.sign(payload, secretKey, { expiresIn: expiresIn } );
 };
 
-const createResponseTokens = (accessToken, refreshToken, expiresIn) => {
-  
+const createResponseTokens = (accessToken, refreshToken) => {
+  return {
+    access_token: accessToken,
+    refresh_token: refreshToken,
+    token_type: "Bearer",
+    expires_in: "3600"
+  };
 };
 
 module.exports = router;
