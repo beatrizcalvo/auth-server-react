@@ -101,7 +101,7 @@ router.post("/refresh", validateRequest(refreshSchema), (req, res, next) => {
     userTokenController.findByToken(token)
       .then(() => {
         // Create new access token
-        
+        const newAccessToken = generateToken(decodedToken.sub, process.env.ACCESS_TOKEN_SECRET_KEY, "1h");
       })
       .catch(() => {
         next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0007()])));
