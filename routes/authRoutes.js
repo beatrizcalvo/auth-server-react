@@ -11,6 +11,9 @@ const { loginSchema, registerSchema, refreshSchema } = require("../validators/au
 const userController = require("../db/controllers/userController");
 const userTokenController = require("../db/controllers/userTokenController");
 
+const ACCESS_TOKEN_EXPIRES_IN = "1h";
+const REFRESH_TOKEN_EXPIRES_IN= "12h";
+
 router.post("/login", validateRequest(loginSchema), (req, res, next) => {
   const email = req.body.email.toLowerCase();
   const password = req.body.password;
@@ -25,8 +28,8 @@ router.post("/login", validateRequest(loginSchema), (req, res, next) => {
           if (!isMatch) return next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0006()])));
 
           // Create JWT tokens
-          const accessToken = generateToken(user._id, process.env.ACCESS_TOKEN_SECRET_KEY, "1h");
-          const refreshToken = generateToken(user._id, process.env.REFRESH_TOKEN_SECRET_KEY, "12h");
+          const accessToken = createToken(user._id, process.env.ACCESS_TOKEN_SECRET_KEY, ACCESS_TOKEN_EXPIRES_IN);
+          const refreshToken = createToken(user._id, process.env.REFRESH_TOKEN_SECRET_KEY, REFRESH_TOKEN_EXPIRES_IN);
 
           // Save refresh token in the database
           userTokenController.updateToken(user._id, refreshToken)
@@ -101,7 +104,7 @@ router.post("/refresh", validateRequest(refreshSchema), (req, res, next) => {
     userTokenController.findByToken(token)
       .then(() => {
         // Create new access token
-        const newAccessToken = generateToken(decodedToken.sub, process.env.ACCESS_TOKEN_SECRET_KEY, "1h");
+        const newAccessToken = createToken(decodedToken.sub, process.env.ACCESS_TOKEN_SECRET_KEY,ACCESS_TOKEN_EXPIRES_IN);
       })
       .catch(() => {
         next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0007()])));
@@ -111,9 +114,13 @@ router.post("/refresh", validateRequest(refreshSchema), (req, res, next) => {
   }
 });
 
-const generateToken = (sub, secretKey, expiresIn) => {
+const createToken = (sub, secretKey, expiresIn) => {
   const payload = { iss: "react-test-app", sub: sub };
   return jwt.sign(payload, secretKey, { expiresIn: expiresIn } );
+};
+
+const createResponseTokens = (accessToken, refreshToken, expiresIn) => {
+  
 };
 
 module.exports = router;
