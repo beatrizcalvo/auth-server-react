@@ -100,6 +100,10 @@ router.post("/refresh", validateRequest(refreshSchema), (req, res, next) => {
       .then(() => {
         // Create new access token
         const newAccessToken = createToken(decodedToken.sub, process.env.ACCESS_TOKEN_SECRET_KEY,ACCESS_TOKEN_EXPIRES_IN);
+        const responseBody = createResponseTokens(newAccessToken, refreshToken);
+        console.error('POST /auth/refresh ## Request Body: {"email": "' + email + '" ...} || Response Status: 200 ## Response Body: ' + 
+                      JSON.stringify(responseBody));
+        res.status(200).send(responseBody);
       })
       .catch(() => {
         next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0007()])));
