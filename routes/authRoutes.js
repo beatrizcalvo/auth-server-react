@@ -105,11 +105,11 @@ router.post("/refresh", validateRequest(refreshSchema), (req, res, next) => {
 
         // Create new access token
         console.log(decodedToken.sub);
-        const newAccessToken = createToken(decodedToken.sub, process.env.ACCESS_TOKEN_SECRET_KEY,ACCESS_TOKEN_EXPIRES_IN);
+        const newAccessToken = createToken(decodedToken.sub, process.env.ACCESS_TOKEN_SECRET_KEY, ACCESS_TOKEN_EXPIRES_IN);
         const responseBody = createResponseTokens(newAccessToken, refreshToken);
-        
-        console.log(responseBody);
-        res.status(200).send({});
+        console.error('POST /auth/refresh ## Request Body: {"email": "' + email + '" ...} || Response Status: 200 ## Response Body: ' + 
+                      JSON.stringify(responseBody));
+        res.status(200).send(responseBody);
       })
       .catch(errorDB => {
         console.log(errorDB);
