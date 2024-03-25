@@ -94,7 +94,9 @@ router.post("/refresh", validateRequest(refreshSchema), (req, res, next) => {
   try {
     // Verify the token and check if the token exists. Any error will return code 401
     const decodedToken = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET_KEY);
-    
+
+    // Check if refresh token exists in database
+    userTokenController.findByToken(refreshToken);
     res.status(201).send({});   
   } catch (error) {
     next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0007()])));
