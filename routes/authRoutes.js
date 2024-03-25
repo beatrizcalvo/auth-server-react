@@ -97,7 +97,12 @@ router.post("/refresh", validateRequest(refreshSchema), (req, res, next) => {
 
     // Check if the token exists in the database
     userTokenController.findByToken(token)
-      .then(() => {
+      .then((userToken) => {
+        // Check if userId in database is equal the sub in token
+        if (userToken.userId !== decodedToken.sub) {
+          next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0007()])));
+        }
+        
         // Create new access token
         const newAccessToken = createToken(decodedToken.sub, process.env.ACCESS_TOKEN_SECRET_KEY,ACCESS_TOKEN_EXPIRES_IN);
         const responseBody = createResponseTokens(newAccessToken, refreshToken);
