@@ -94,13 +94,8 @@ router.post("/refresh", validateRequest(refreshSchema), (req, res, next) => {
   try {
     // Verify the token and check if the token exists. Any error will return code 401
     const decodedToken = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET_KEY);
-
-    // Create new access token
-    const newAccessToken = createToken(decodedToken.sub, process.env.ACCESS_TOKEN_SECRET_KEY, ACCESS_TOKEN_EXPIRES_IN);
-    const responseBody = createResponseTokens(newAccessToken, refreshToken);
-    console.log('POST /auth/refresh ## Request Body: {"email": "' + email + '" ...} || Response Status: 201 ## Response Body: ' + 
-                JSON.stringify(responseBody));
-    res.status(201).send(responseBody);   
+    
+    res.status(201).send({});   
   } catch (error) {
     next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0007()])));
   }
