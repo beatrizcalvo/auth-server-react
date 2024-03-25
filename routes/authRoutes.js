@@ -11,7 +11,7 @@ const { loginSchema, registerSchema, refreshSchema } = require("../validators/au
 const userController = require("../db/controllers/userController");
 const userTokenController = require("../db/controllers/userTokenController");
 
-const ACCESS_TOKEN_EXPIRES_IN = "1h";
+const ACCESS_TOKEN_EXPIRES_IN = "1m";
 const REFRESH_TOKEN_EXPIRES_IN= "12h";
 
 router.post("/login", validateRequest(loginSchema), (req, res, next) => {
