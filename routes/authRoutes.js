@@ -36,7 +36,7 @@ router.post("/login", validateRequest(loginSchema), (req, res, next) => {
             .then(() => {
               // Return success response
               const responseBody = createResponseTokens(accessToken, refreshToken);
-              console.error('POST /auth/login ## Request Body: {"email": "' + email + 
+              console.log('POST /auth/login ## Request Body: {"email": "' + email + 
                             '" ...} || Response Status: 200 ## Response Body: ' + 
                             JSON.stringify(responseBody));
               res.status(200).send(responseBody);
@@ -75,7 +75,7 @@ router.post("/register", validateRequest(registerSchema), (req, res, next) => {
             email: result.email,
             createdAt: result.createdAt,
           };
-          console.error('POST /auth/register ## Request Body: {"firstName": "' + firstName + '", "lastName": "' + lastName + 
+          console.log('POST /auth/register ## Request Body: {"firstName": "' + firstName + '", "lastName": "' + lastName + 
                         '", "email": "' + email + '" ...} || Response Status: 201 ## Response Body: ' + JSON.stringify(responseBody));
           res.status(201).send(responseBody);
         })
@@ -106,7 +106,7 @@ router.post("/refresh", validateRequest(refreshSchema), (req, res, next) => {
         // Create new access token
         const newAccessToken = createToken(decodedToken.sub, process.env.ACCESS_TOKEN_SECRET_KEY, ACCESS_TOKEN_EXPIRES_IN);
         const responseBody = createResponseTokens(newAccessToken, refreshToken);
-        console.error('POST /auth/refresh ## Request Body: {"email": "' + email + '" ...} || Response Status: 201 ## Response Body: ' + 
+        console.log('POST /auth/refresh ## Request Body: {"email": "' + email + '" ...} || Response Status: 201 ## Response Body: ' + 
                       JSON.stringify(responseBody));
         res.status(201).send(responseBody);
       })
