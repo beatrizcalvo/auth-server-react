@@ -7,8 +7,12 @@ const updateToken = function (userId, token) {
   return UserToken.findOneAndUpdate(
     { userId: userId }, 
     { token: token }, 
-    { upsert: true }
-  );
+    { 
+      new: true,
+      select: NON_SELECTED_FIELDS,
+      upsert: true 
+    }
+  ).lean().exec();
 };
 
 const findByToken = function (token) {
