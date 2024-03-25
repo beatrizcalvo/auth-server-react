@@ -89,14 +89,14 @@ router.post("/register", validateRequest(registerSchema), (req, res, next) => {
 });
 
 router.post("/refresh", validateRequest(refreshSchema), (req, res, next) => {
-  const token = req.body.refresh_token.trim();
+  const refreshToken = req.body.refresh_token.trim();
 
   try {
     // Verify the token and check if the token exists. Any error will return code 401
-    const decodedToken = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET_KEY);
+    const decodedToken = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET_KEY);
 
     // Check if the token exists in the database
-    userTokenController.findByToken(token)
+    userTokenController.findByToken(refreshToken)
       .then(userToken => {
         // Check if userId in database is equal the sub in token
         if (userToken.userId !== decodedToken.sub) {
@@ -104,19 +104,16 @@ router.post("/refresh", validateRequest(refreshSchema), (req, res, next) => {
         }
 
         // Create new access token
-        console.log(decodedToken.sub);
         const newAccessToken = createToken(decodedToken.sub, process.env.ACCESS_TOKEN_SECRET_KEY, ACCESS_TOKEN_EXPIRES_IN);
         const responseBody = createResponseTokens(newAccessToken, refreshToken);
         console.error('POST /auth/refresh ## Request Body: {"email": "' + email + '" ...} || Response Status: 200 ## Response Body: ' + 
                       JSON.stringify(responseBody));
         res.status(200).send(responseBody);
       })
-      .catch(errorDB => {
-        console.log(errorDB);
+      .catch(() => {
         next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0007()])));
       });
   } catch (error) {
-    console.log(error);
     next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0007()])));
   }
 });
