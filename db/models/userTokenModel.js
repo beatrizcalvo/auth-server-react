@@ -14,4 +14,4 @@ const UserTokenSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model.UsersToken || mongoose.model("UsersToken", UserTokenSchema);
+module.exports = mongoose.model.UsersTokens || mongoose.model("UsersTokens", UserTokenSchema);
