@@ -104,6 +104,7 @@ router.post("/refresh", validateRequest(refreshSchema), (req, res, next) => {
         }
 
         // Create new access token
+        console.log(decodedToken.sub);
         const newAccessToken = createToken(decodedToken.sub, process.env.ACCESS_TOKEN_SECRET_KEY,ACCESS_TOKEN_EXPIRES_IN);
         const responseBody = createResponseTokens(newAccessToken, refreshToken);
         
