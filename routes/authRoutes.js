@@ -109,11 +109,12 @@ router.post("/refresh", validateRequest(refreshSchema), (req, res, next) => {
         console.log("OK");
         res.status(200).send({});
       })
-      .catch(error => {
-        console.log(error);
+      .catch(errorDB => {
+        console.log(errorDB);
         next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0007()])));
       });
   } catch (error) {
+    console.log(error);
     next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0007()])));
   }
 });
