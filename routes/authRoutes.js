@@ -97,10 +97,11 @@ router.post("/refresh", validateRequest(refreshSchema), (req, res, next) => {
 
     // Check if the token exists in the database
     userTokenController.findByToken(token)
-      .then(() => console.log("OK"))
-      .catch((error) => console.log(error));
-
-    res.status(200).send({});
+      .then(() => res.status(200).send({});)
+      .catch((error) => {
+        console.log(error);
+        next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0007()])));
+      });
   } catch (error) {
     next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0007()])));
   }
