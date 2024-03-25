@@ -103,8 +103,11 @@ router.post("/refresh", validateRequest(refreshSchema), (req, res, next) => {
           next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0007()])));
         }
 
-        console.log("OK")
-        res.status(200).send({})
+        // Create new access token
+        const newAccessToken = createToken(decodedToken.sub, process.env.ACCESS_TOKEN_SECRET_KEY,ACCESS_TOKEN_EXPIRES_IN);
+        
+        console.log("OK");
+        res.status(200).send({});
       })
       .catch(error => {
         console.log(error);
