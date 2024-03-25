@@ -95,24 +95,12 @@ router.post("/refresh", validateRequest(refreshSchema), (req, res, next) => {
     // Verify the token and check if the token exists. Any error will return code 401
     const decodedToken = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET_KEY);
 
-    // Check if the token exists in the database
-    userTokenController.findByToken(refreshToken)
-      .then(userToken => {
-        // Check if userId in database is equal the sub in token
-        if (userToken.userId !== decodedToken.sub) {
-          next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0007()])));
-        }
-
-        // Create new access token
-        const newAccessToken = createToken(decodedToken.sub, process.env.ACCESS_TOKEN_SECRET_KEY, ACCESS_TOKEN_EXPIRES_IN);
-        const responseBody = createResponseTokens(newAccessToken, refreshToken);
-        console.log('POST /auth/refresh ## Request Body: {"email": "' + email + '" ...} || Response Status: 201 ## Response Body: ' + 
-                      JSON.stringify(responseBody));
-        res.status(201).send(responseBody);
-      })
-      .catch(() => {
-        next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0007()])));
-      });
+    // Create new access token
+    const newAccessToken = createToken(decodedToken.sub, process.env.ACCESS_TOKEN_SECRET_KEY, ACCESS_TOKEN_EXPIRES_IN);
+    const responseBody = createResponseTokens(newAccessToken, refreshToken);
+    console.log('POST /auth/refresh ## Request Body: {"email": "' + email + '" ...} || Response Status: 201 ## Response Body: ' + 
+                JSON.stringify(responseBody));
+    res.status(201).send(responseBody);   
   } catch (error) {
     next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0007()])));
   }
