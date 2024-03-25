@@ -31,7 +31,7 @@ const createUser = async function (firstName, lastName, email, password) {
 };
 
 const findByEmail = function (email) {
-  return User.findOne({ email: email }).lean().exec();
+  return User.findOne({ email: email }, NON_SELECTED_FIELDS).lean().exec();
 };
 
 const findById = function (id) {
