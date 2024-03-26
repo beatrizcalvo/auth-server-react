@@ -98,6 +98,8 @@ router.post("/refresh", validateRequest(refreshSchema), (req, res, next) => {
     // Check if refresh token exists in database
     userTokenController.findByToken(refreshToken)
       .then(userToken => {
+        console.log("userToken ====> " + userToken);
+        console.log("decodedToken ======> " + decodedToken);
         // Check if userId in database is equal to sub in refresh token
         if (userToken.userId !== decodedToken.sub) {
           return next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0007()])));
