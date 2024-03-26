@@ -110,12 +110,10 @@ router.post("/refresh", validateRequest(refreshSchema), (req, res, next) => {
                     JSON.stringify(responseBody))
         res.status(201).send(responseBody);
       })
-      .catch((err) => {
-        console.log("error findByToken: " + err);
+      .catch(() => {
         next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0007()])));
       });
   } catch (error) {
-    console.log("main error: " + error);
     next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0007()])));
   }
 });
