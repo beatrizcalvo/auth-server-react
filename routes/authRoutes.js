@@ -99,12 +99,12 @@ router.post("/refresh", validateRequest(refreshSchema), (req, res, next) => {
     userTokenController.findByToken(refreshToken)
       .then(userToken => {
         // Check if userId in database is equal to sub in refresh token
-        if (userToken.userId !== decodedToken.sub) {
+        if (userToken.userId.toString() !== decodedToken.sub) {
           return next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0007()])));
         }
 
         // Create new access token
-        const newAccessToken = createToken(userToken.userId, process.env.ACCESS_TOKEN_SECRET_KEY, ACCESS_TOKEN_EXPIRES_IN);
+        const newAccessToken = createToken(decodedToken.sub, process.env.ACCESS_TOKEN_SECRET_KEY, ACCESS_TOKEN_EXPIRES_IN);
         const responseBody = createResponseTokens(newAccessToken, refreshToken);
         console.log('POST /auth/refresh ## Request Body: {"refresh_token": "' + refreshToken + '"} || Response Status: 201 ## Response Body: ' + 
                     JSON.stringify(responseBody));
