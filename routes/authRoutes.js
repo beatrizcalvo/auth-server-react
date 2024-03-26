@@ -100,7 +100,7 @@ router.post("/refresh", validateRequest(refreshSchema), (req, res, next) => {
       .then(userToken => {
         // Check if userId in database is equal to sub in refresh token
         if (userToken.userId !== decodedToken.sub) {
-          next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0007()])));
+          return next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0007()])));
         }
         
         console.log("OK");
