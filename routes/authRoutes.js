@@ -98,8 +98,8 @@ router.post("/refresh", validateRequest(refreshSchema), (req, res, next) => {
     // Check if refresh token exists in database
     userTokenController.findByToken(refreshToken)
       .then(userToken => {
-        console.log("userToken.userId ====> " + userToken.userId);
-        console.log("decodedToken.sub ======> " + decodedToken.sub);
+        console.log("userToken.userId ====> " + Object.prototype.toString.call(userToken.userId));
+        console.log("decodedToken.sub ======> " + Object.prototype.toString.call(decodedToken.sub));
         console.log(userToken.userId === decodedToken.sub);
         // Check if userId in database is equal to sub in refresh token
         if (userToken.userId !== decodedToken.sub) {
