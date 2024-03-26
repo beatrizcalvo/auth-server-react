@@ -95,9 +95,20 @@ router.post("/refresh", validateRequest(refreshSchema), (req, res, next) => {
     // Verify the token and check if the token exists. Any error will return code 401
     const decodedToken = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET_KEY);
 
-    console.log('POST /auth/refresh ## Request Body: {"refresh_token": "' + refreshToken + '"} || Response Status: 201 ## Response Body: ' + 
-                JSON.stringify({}));
-    res.status(201).send({});
+    // Check if refresh token exists in database
+    userTokenController.findByToken(refreshToken)
+      .then(userToken => {
+        // Check if userId in database is equal to sub in refresh token
+        if (userToken.userId !== decodedToken.sub) {
+          next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0007()])));
+        }
+        
+        console.log("OK");
+        res.status(201).send({});
+      })
+      .catch(() => {
+        next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0007()])));
+      });
   } catch (error) {
     next(createHttpError(401, JSON.stringify([errorMessages.AUTH_API_F_0007()])));
   }
