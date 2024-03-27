@@ -33,4 +33,8 @@ router.get("/me", (req, res, next) => {
     });
 });
 
+router.delete("/me", (req, res, next) => {
+  res.status(200).send({});
+});
+
 module.exports = router;
